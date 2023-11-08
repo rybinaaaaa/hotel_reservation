@@ -18,6 +18,12 @@ public class Reservation {
 
     @OneToMany(mappedBy = "reservation")
     private List<RoomCart> roomCarts;
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+    @OneToOne
+    @JoinColumn(name = "payment_id")
+    private Payment payment;
 
     public Reservation() {
     }
