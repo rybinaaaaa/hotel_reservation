@@ -2,6 +2,8 @@ package com.hotel.reservationSystem.models;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class User {
     @Id
@@ -25,6 +27,9 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private ROLE role;
+
+    @OneToMany(mappedBy = "user")
+    private List<Reservation> reservations;
 
     public User() {
 
@@ -89,5 +94,13 @@ public class User {
 
     public void setRole(ROLE role) {
         this.role = role;
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
     }
 }

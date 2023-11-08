@@ -21,6 +21,10 @@ public class Payment {
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date date;
 
+    @OneToOne
+    @JoinColumn(name = "reservation_id")
+    private Reservation reservation;
+
     public Payment() {
 
     }
