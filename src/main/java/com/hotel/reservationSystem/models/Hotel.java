@@ -63,19 +63,19 @@ public class Hotel {
     }
 
     public void addRoom(Room room) {
-        if (room == null) {
-            return;
-        }
+        if (room == null) return;
         if (this.rooms == null) {
             this.rooms = Collections.singletonList(room);
             return;
         }
-        if (!rooms.stream().map(r -> Objects.equals(r.getId(), room.getId())).findAny().isPresent()) {
+        if (rooms.stream().map(r -> Objects.equals(r.getId(), room.getId())).findAny().isEmpty()) {
             this.rooms.add(room);
+            room.setHotel(this);
         }
     }
 
     public void deleteRoomById(Integer id) {
+        if (this.rooms == null) return;
         this.rooms.removeIf(r -> Objects.equals(r.getId(), id));
     }
 }

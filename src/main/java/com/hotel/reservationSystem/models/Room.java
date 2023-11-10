@@ -2,9 +2,7 @@ package com.hotel.reservationSystem.models;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -49,7 +47,8 @@ public class Room {
 
     public void addCategory(Category category) {
         if (categories == null) {
-            this.categories = new ArrayList<>();
+            this.categories = Collections.singletonList(category);
+            return;
         }
         categories.add(category);
     }

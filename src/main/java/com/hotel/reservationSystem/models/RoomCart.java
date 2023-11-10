@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "room_cart")
@@ -37,5 +36,45 @@ public class RoomCart {
     public RoomCart(Date reservedFrom, Date reservedTo) {
         this.reservedFrom = reservedFrom;
         this.reservedTo = reservedTo;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Date getReservedFrom() {
+        return reservedFrom;
+    }
+
+    public void setReservedFrom(Date reservedFrom) {
+        this.reservedFrom = reservedFrom;
+    }
+
+    public Date getReservedTo() {
+        return reservedTo;
+    }
+
+    public void setReservedTo(Date reservedTo) {
+        this.reservedTo = reservedTo;
+    }
+
+    public Reservation getReservation() {
+        return reservation;
+    }
+
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
+    }
+
+    public RoomItem getRoomItem() {
+        return roomItem;
+    }
+
+    public void setRoomItem(RoomItem roomItem) {
+        this.roomItem = roomItem;
     }
 }

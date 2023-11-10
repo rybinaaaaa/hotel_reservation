@@ -50,7 +50,7 @@ public class User {
         if (reservations == null) {
             this.reservations = new ArrayList<>();
         }
-        if (!reservations.stream().map(r -> Objects.equals(r.getId(), reservation.getId())).findAny().isPresent()) {
+        if (reservations.stream().map(r -> Objects.equals(r.getId(), reservation.getId())).findAny().isEmpty()) {
             reservations.add(reservation);
         }
     }

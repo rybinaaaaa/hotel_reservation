@@ -28,6 +28,7 @@ public class Category {
     }
 
     public void addRoom(Room room) {
+        if (room == null) return;
         if (this.rooms == null) {
             this.rooms = Collections.singletonList(room);
             return;

@@ -26,4 +26,28 @@ public class RoomItem extends Room {
         this.roomNumber = roomNumber;
         this.reserved = reserved;
     }
+
+    public Integer getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(Integer roomNumber) {
+        this.roomNumber = roomNumber;
+    }
+
+    public Boolean getReserved() {
+        return reserved;
+    }
+
+    public void setReserved(Boolean reserved) {
+        this.reserved = reserved;
+    }
+
+    public List<RoomCart> getRoomCarts() {
+        return roomCarts;
+    }
+
+    public void setRoomCarts(List<RoomCart> roomCarts) {
+        this.roomCarts = roomCarts;
+    }
 }

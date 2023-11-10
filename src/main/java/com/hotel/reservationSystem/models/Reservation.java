@@ -1,10 +1,10 @@
 package com.hotel.reservationSystem.models;
 
 import jakarta.persistence.*;
-import org.springframework.format.annotation.DateTimeFormat;
-
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Reservation {
@@ -13,7 +13,6 @@ public class Reservation {
     private Integer id;
 
     @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date createdAt;
 
     @OneToMany(mappedBy = "reservation")
@@ -70,5 +69,23 @@ public class Reservation {
 
     public void setPayment(Payment payment) {
         this.payment = payment;
+    }
+
+    public void addRoomCart(RoomCart roomCart) {
+        if (roomCart == null) return;
+        if (this.roomCarts == null) {
+            this.roomCarts = Collections.singletonList(roomCart);
+            roomCart.setReservation(this);
+            return;
+        }
+        if (this.roomCarts.stream().map(r -> Objects.equals(r.getId(), roomCart.getId())).findAny().isEmpty()) {
+            this.roomCarts.add(roomCart);
+            roomCart.setReservation(this);
+        }
+    }
+
+    public void deleteRoomCartById(Integer id) {
+        if (this.roomCarts == null) return;
+        this.roomCarts.removeIf(r -> Objects.equals(r.getId(), id));
     }
 }
