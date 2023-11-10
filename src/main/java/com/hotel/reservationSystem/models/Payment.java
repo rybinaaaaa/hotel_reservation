@@ -15,7 +15,7 @@ public class Payment {
     private Double amount;
 
     @Column(name = "bill_number")
-    private int billNumber;
+    private Integer billNumber;
 
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "dd/MM/yyyy")
@@ -29,7 +29,7 @@ public class Payment {
 
     }
 
-    public Payment(Double amount, int billNumber, Date date) {
+    public Payment(Double amount, Integer billNumber, Date date) {
         this.amount = amount;
         this.billNumber = billNumber;
         this.date = date;
@@ -39,6 +39,9 @@ public class Payment {
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Double getAmount() {
         return amount;
@@ -48,11 +51,11 @@ public class Payment {
         this.amount = amount;
     }
 
-    public int getBillNumber() {
+    public Integer getBillNumber() {
         return billNumber;
     }
 
-    public void setBillNumber(int billNumber) {
+    public void setBillNumber(Integer billNumber) {
         this.billNumber = billNumber;
     }
 
@@ -62,5 +65,13 @@ public class Payment {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public Reservation getReservation() {
+        return reservation;
+    }
+
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
     }
 }

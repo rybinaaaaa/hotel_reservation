@@ -10,7 +10,7 @@ import java.util.List;
 public class RoomItem extends Room {
 
     @Column(name = "room_number")
-    private int roomNumber;
+    private Integer roomNumber;
 
     @Column
     private Boolean reserved;
@@ -21,7 +21,7 @@ public class RoomItem extends Room {
     public RoomItem() {
     }
 
-    public RoomItem(String name, Double price, String description, ROOM_CLASSIFICATION roomClassification, ROOM_TYPE roomType, int roomNumber, Boolean reserved) {
+    public RoomItem(String name, Double price, String description, RoomClassification roomClassification, RoomType roomType, Integer roomNumber, Boolean reserved) {
         super(name, price, description, roomClassification, roomType);
         this.roomNumber = roomNumber;
         this.reserved = reserved;

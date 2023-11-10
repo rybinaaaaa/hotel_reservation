@@ -1,5 +1,5 @@
 package com.hotel.reservationSystem.models;
 
-public enum ROLE {
+public enum Role {
     USER, ADMIN
 }

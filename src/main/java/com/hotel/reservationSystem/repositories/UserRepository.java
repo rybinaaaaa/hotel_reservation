@@ -1,7 +1,7 @@
 package com.hotel.reservationSystem.repositories;
 
 
-import com.hotel.reservationSystem.models.ROLE;
+import com.hotel.reservationSystem.models.Role;
 import com.hotel.reservationSystem.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,11 +15,11 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Integer> {
     User findByLastName(String name);
 
-    User findByPhone(int phone);
+    User findByPhone(Integer phone);
 
     User findByEmail(String email);
 
-    int countByRole(ROLE role);
+    Integer countByRole(Role role);
 
     @Query("SELECT DISTINCT u FROM User u JOIN FETCH u.reservations r WHERE r.createdAt > :specificDate")
     List<User> findUsersWithReservationsAfterSpecificDate(@Param("specificDate") LocalDate specificDate);

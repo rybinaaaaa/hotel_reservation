@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PaymentRepository extends JpaRepository<Payment, Integer> {
-    Payment findByBillNumber(int billNumber);
+    Payment findByBillNumber(Integer billNumber);
     Payment findByReservation(Reservation reservation);
 }
 

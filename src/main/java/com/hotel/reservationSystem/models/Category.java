@@ -30,7 +30,6 @@ public class Category {
     }
 
     public void addRoom(Room room) {
-        Objects.requireNonNull(room);
         if (rooms == null) {
             this.rooms = new ArrayList<>();
         }
@@ -38,7 +37,6 @@ public class Category {
     }
 
     public void removeRoom(Room room) {
-        Objects.requireNonNull(room);
         if (rooms == null) {
             return;
         }

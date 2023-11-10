@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 public class PaymentService {
     PaymentRepository paymentRepository;
 
@@ -19,33 +20,29 @@ public class PaymentService {
         this.paymentRepository = paymentRepository;
     }
 
-    @Transactional(readOnly = true)
-    public Payment find(int id) {
+    public Payment find(Integer id) {
         return paymentRepository.findById(id).orElse(null);
     }
 
-    @Transactional(readOnly = true)
     public List<Payment> findAll() {
         return paymentRepository.findAll();
     }
 
-    @Transactional(readOnly = true)
-    public List<Payment> findAll(int page, int size){
+    public List<Payment> findAll(Integer page, Integer size) {
         return paymentRepository.findAll(PageRequest.of(page, size)).getContent();
     }
 
-    @Transactional(readOnly = true)
-    public Payment findByBillNumber(int billNumber){
+    public Payment findByBillNumber(Integer billNumber) {
         return paymentRepository.findByBillNumber(billNumber);
     }
 
-    @Transactional(readOnly = true)
-    public Payment findByReservation(Reservation reservation){
+    public Payment findByReservation(Reservation reservation) {
         return paymentRepository.findByReservation(reservation);
     }
 
     @Transactional
-    public void update(Payment payment) {
+    public void update(Integer id, Payment payment) {
+        payment.setId(id);
         paymentRepository.save(payment);
     }
 
@@ -55,7 +52,7 @@ public class PaymentService {
     }
 
     @Transactional
-    public void delete(int id) {
+    public void delete(Integer id) {
         paymentRepository.deleteById(id);
     }
 }

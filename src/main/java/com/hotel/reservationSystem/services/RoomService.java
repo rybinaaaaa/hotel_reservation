@@ -1,6 +1,9 @@
 package com.hotel.reservationSystem.services;
 
-import com.hotel.reservationSystem.models.*;
+import com.hotel.reservationSystem.models.Category;
+import com.hotel.reservationSystem.models.Room;
+import com.hotel.reservationSystem.models.RoomClassification;
+import com.hotel.reservationSystem.models.RoomType;
 import com.hotel.reservationSystem.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -8,9 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
+@Transactional(readOnly = true)
 public class RoomService {
     RoomRepository roomRepository;
 
@@ -19,59 +22,49 @@ public class RoomService {
         this.roomRepository = roomRepository;
     }
 
-    @Transactional(readOnly = true)
-    public Room find(int id) {
+    public Room find(Integer id) {
         return roomRepository.findById(id).orElse(null);
     }
 
-    @Transactional(readOnly = true)
     public List<Room> findAll() {
         return roomRepository.findAll();
     }
 
-    @Transactional(readOnly = true)
-    public List<Room> findAll(int page, int size){
+    public List<Room> findAll(Integer page, Integer size) {
         return roomRepository.findAll(PageRequest.of(page, size)).getContent();
     }
 
-    @Transactional(readOnly = true)
     public List<Room> findByName(String lastName) {
         return roomRepository.findByName(lastName);
     }
 
-    @Transactional(readOnly = true)
     public List<Room> findByPrice(Double price) {
         return roomRepository.findByPrice(price);
     }
 
-    @Transactional(readOnly = true)
-    public List<Room> findByRoomType(ROOM_TYPE roomType) {
+    public List<Room> findByRoomType(RoomType roomType) {
         return roomRepository.findByRoomType(roomType);
     }
 
-    @Transactional(readOnly = true)
-    public List<Room> findByRoomClassification(ROOM_CLASSIFICATION roomClassification) {
+    public List<Room> findByRoomClassification(RoomClassification roomClassification) {
         return roomRepository.findByRoomClassification(roomClassification);
     }
 
     @Transactional
     public void addCategory(Category category, Room room) {
-        Objects.requireNonNull(category);
-        Objects.requireNonNull(room);
+//        TODO 2 sides relation
         room.addCategory(category);
-        update(room);
     }
 
     @Transactional
     public void removeCategory(Category category, Room room) {
-        Objects.requireNonNull(category);
-        Objects.requireNonNull(room);
+//        TODO 2 sides relation
         room.removeCategory(category);
-        update(room);
     }
 
     @Transactional
-    public void update(Room room) {
+    public void update(Integer id, Room room) {
+        room.setId(id);
         roomRepository.save(room);
     }
 
@@ -81,7 +74,7 @@ public class RoomService {
     }
 
     @Transactional
-    public void delete(int id) {
+    public void delete(Integer id) {
         roomRepository.deleteById(id);
     }
 }

@@ -13,7 +13,7 @@ public class User {
     private Integer id;
 
     @Column
-    private int phone;
+    private Integer phone;
 
     @Column(name = "first_name")
     private String firstName;
@@ -28,7 +28,7 @@ public class User {
     private String email;
 
     @Enumerated(EnumType.STRING)
-    private ROLE role;
+    private Role role;
 
     @OneToMany(mappedBy = "user")
     private List<Reservation> reservations;
@@ -37,7 +37,7 @@ public class User {
 
     }
 
-    public User(int phone, String firstName, String lastName, String password, String email, ROLE role) {
+    public User(Integer phone, String firstName, String lastName, String password, String email, Role role) {
         this.phone = phone;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -45,12 +45,14 @@ public class User {
         this.email = email;
         this.role = role;
     }
+
     public void addReservation(Reservation reservation) {
-        Objects.requireNonNull(reservation);
         if (reservations == null) {
             this.reservations = new ArrayList<>();
         }
-        reservations.add(reservation);
+        if (reservations.stream().map(r -> Objects.equals(r.getId(), reservation.getId())).findAny().isPresent()) {
+            reservations.add(reservation);
+        }
     }
 
     public void removeReservation(Reservation reservation) {
@@ -65,11 +67,11 @@ public class User {
         return id;
     }
 
-    public int getPhone() {
+    public Integer getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(Integer phone) {
         this.phone = phone;
     }
 
@@ -105,11 +107,11 @@ public class User {
         this.email = email;
     }
 
-    public ROLE getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(ROLE role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
@@ -119,5 +121,9 @@ public class User {
 
     public void setReservations(List<Reservation> reservations) {
         this.reservations = reservations;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

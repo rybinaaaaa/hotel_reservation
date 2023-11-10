@@ -24,11 +24,11 @@ public class Room {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "room_classification")
-    private ROOM_CLASSIFICATION roomClassification;
+    private RoomClassification roomClassification;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "room_type")
-    private ROOM_TYPE roomType;
+    private RoomType roomType;
 
     @ManyToMany(mappedBy = "rooms")
     private List<Category> categories;
@@ -36,7 +36,7 @@ public class Room {
     public Room() {
     }
 
-    public Room(String name, Double price, String description, ROOM_CLASSIFICATION roomClassification, ROOM_TYPE roomType) {
+    public Room(String name, Double price, String description, RoomClassification roomClassification, RoomType roomType) {
         this.name = name;
         this.price = price;
         this.description = description;
@@ -92,19 +92,19 @@ public class Room {
         this.description = description;
     }
 
-    public ROOM_CLASSIFICATION getRoomClassification() {
+    public RoomClassification getRoomClassification() {
         return roomClassification;
     }
 
-    public void setRoomClassification(ROOM_CLASSIFICATION roomClassification) {
+    public void setRoomClassification(RoomClassification roomClassification) {
         this.roomClassification = roomClassification;
     }
 
-    public ROOM_TYPE getRoomType() {
+    public RoomType getRoomType() {
         return roomType;
     }
 
-    public void setRoomType(ROOM_TYPE roomType) {
+    public void setRoomType(RoomType roomType) {
         this.roomType = roomType;
     }
 

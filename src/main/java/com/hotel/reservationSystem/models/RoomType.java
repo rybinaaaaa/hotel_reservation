@@ -1,5 +1,5 @@
 package com.hotel.reservationSystem.models;
 
-public enum ROOM_TYPE {
+public enum RoomType {
     DOUBLE, FAMILY, SINGLE
 }

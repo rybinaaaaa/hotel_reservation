@@ -3,13 +3,14 @@ package com.hotel.reservationSystem.services;
 import com.hotel.reservationSystem.models.Category;
 import com.hotel.reservationSystem.models.Room;
 import com.hotel.reservationSystem.repositories.CategoryRepository;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
-import java.util.Objects;
 
 @Service
+@Transactional(readOnly = true)
 public class CategoryService {
     CategoryRepository categoryRepository;
 
@@ -18,17 +19,14 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    @Transactional(readOnly = true)
-    public Category find(int id) {
+    public Category find(Integer id) {
         return categoryRepository.findById(id).orElse(null);
     }
 
-    @Transactional(readOnly = true)
     public List<Category> findAll() {
         return categoryRepository.findAll();
     }
 
-    @Transactional(readOnly = true)
     public Category findByName(String name) {
         return categoryRepository.findByName(name);
     }
@@ -40,29 +38,18 @@ public class CategoryService {
 
     @Transactional
     public void addRoom(Category category, Room room) {
-        Objects.requireNonNull(category);
-        Objects.requireNonNull(room);
         category.addRoom(room);
-        update(category);
     }
 
     @Transactional
     public void removeRoom(Category category, Room room) {
-        Objects.requireNonNull(category);
-        Objects.requireNonNull(room);
         category.removeRoom(room);
-        update(category);
     }
 
     @Transactional
-    public void update(Category category) {
-        categoryRepository.save(category);
-    }
-
-    @Transactional
-    public void update(int id, Category category) {
+    public void update(Integer id, Category category) {
         category.setId(id);
-       categoryRepository.save(category);
+        categoryRepository.save(category);
     }
 
     @Transactional
@@ -71,7 +58,7 @@ public class CategoryService {
     }
 
     @Transactional
-    public void delete(int id) {
+    public void delete(Integer id) {
         categoryRepository.deleteById(id);
     }
 }
