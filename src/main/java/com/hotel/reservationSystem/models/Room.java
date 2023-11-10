@@ -33,6 +33,9 @@ public class Room {
     @ManyToMany(mappedBy = "rooms")
     private List<Category> categories;
 
+    @ManyToOne
+    private Hotel hotel;
+
     public Room() {
     }
 
@@ -45,7 +48,6 @@ public class Room {
     }
 
     public void addCategory(Category category) {
-        Objects.requireNonNull(category);
         if (categories == null) {
             this.categories = new ArrayList<>();
         }
@@ -53,7 +55,6 @@ public class Room {
     }
 
     public void removeCategory(Category category) {
-        Objects.requireNonNull(category);
         if (categories == null) {
             return;
         }
@@ -114,5 +115,13 @@ public class Room {
 
     public void setCategories(List<Category> categories) {
         this.categories = categories;
+    }
+
+    public Hotel getHotel() {
+        return hotel;
+    }
+
+    public void setHotel(Hotel hotel) {
+        this.hotel = hotel;
     }
 }

@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true)
 public class PaymentService {
-    PaymentRepository paymentRepository;
+    private final PaymentRepository paymentRepository;
 
     @Autowired
     public PaymentService(PaymentRepository paymentRepository) {

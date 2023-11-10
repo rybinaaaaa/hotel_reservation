@@ -2,9 +2,7 @@ package com.hotel.reservationSystem.models;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 public class Category {
@@ -30,17 +28,18 @@ public class Category {
     }
 
     public void addRoom(Room room) {
-        if (rooms == null) {
-            this.rooms = new ArrayList<>();
+        if (this.rooms == null) {
+            this.rooms = Collections.singletonList(room);
+            return;
         }
-        rooms.add(room);
+        this.rooms.add(room);
     }
 
     public void removeRoom(Room room) {
-        if (rooms == null) {
+        if (this.rooms == null) {
             return;
         }
-        rooms.removeIf(r -> Objects.equals(r.getId(), room.getId()));
+        this.rooms.removeIf(r -> Objects.equals(r.getId(), room.getId()));
     }
 
     public String getName() {

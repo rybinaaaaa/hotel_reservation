@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true)
 public class CategoryService {
-    CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
     @Autowired
     public CategoryService(CategoryRepository categoryRepository) {

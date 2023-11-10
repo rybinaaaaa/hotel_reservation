@@ -15,7 +15,7 @@ import java.util.Objects;
 @Service
 @Transactional(readOnly = true)
 public class UserService {
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public UserService(UserRepository userRepository) {

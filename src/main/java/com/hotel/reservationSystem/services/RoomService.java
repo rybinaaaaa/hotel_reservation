@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true)
 public class RoomService {
-    RoomRepository roomRepository;
+    private final RoomRepository roomRepository;
 
     @Autowired
     public RoomService(RoomRepository roomRepository) {
