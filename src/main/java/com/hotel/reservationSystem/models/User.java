@@ -2,7 +2,9 @@ package com.hotel.reservationSystem.models;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class User {
@@ -42,6 +44,21 @@ public class User {
         this.password = password;
         this.email = email;
         this.role = role;
+    }
+    public void addReservation(Reservation reservation) {
+        Objects.requireNonNull(reservation);
+        if (reservations == null) {
+            this.reservations = new ArrayList<>();
+        }
+        reservations.add(reservation);
+    }
+
+    public void removeReservation(Reservation reservation) {
+        Objects.requireNonNull(reservation);
+        if (reservations == null) {
+            return;
+        }
+        reservations.removeIf(r -> Objects.equals(r.getId(), reservation.getId()));
     }
 
     public Integer getId() {

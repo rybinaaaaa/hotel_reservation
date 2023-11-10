@@ -31,4 +31,44 @@ public class Reservation {
     public Reservation(Date createdAt) {
         this.createdAt = createdAt;
     }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public List<RoomCart> getRoomCarts() {
+        return roomCarts;
+    }
+
+    public void setRoomCarts(List<RoomCart> roomCarts) {
+        this.roomCarts = roomCarts;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
+    }
 }
