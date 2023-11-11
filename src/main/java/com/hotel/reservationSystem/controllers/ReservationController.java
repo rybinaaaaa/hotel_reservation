@@ -48,7 +48,7 @@ public class ReservationController {
         return new ResponseEntity<>(savedReservation, HttpStatus.CREATED);
     }
 
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Reservation> update(
             @PathVariable("id") Integer id,
             @RequestBody Reservation reservation

@@ -45,7 +45,7 @@ public class CategoryServiceTest {
         service.removeRoom(category, room);
 
         final Category result = em.find(Category.class, category.getId());
-        assertEquals(result.getRooms(), null);
+        assertNull(result.getRooms());
     }
 
 }

@@ -55,7 +55,7 @@ public class RoomController {
         }
         return new ResponseEntity<>(roomService.save(room), HttpStatus.CREATED);
     }
-    @PatchMapping ("/{id}")
+    @PutMapping ("/{id}")
     public ResponseEntity<Room> updateRoom(@RequestBody Room room, @PathVariable("id") Integer id) {
         if (room == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

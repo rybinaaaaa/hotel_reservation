@@ -25,19 +25,19 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public User getUser(@PathVariable("id") Integer id) {
+    public User show(@PathVariable("id") Integer id) {
         return userService.find(id);
     }
 
     @PostMapping()
-    public ResponseEntity<User> create(@RequestBody User user) {
+    public ResponseEntity<User> createUser(@RequestBody User user) {
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
     }
 
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable("id") Integer id) {
         User updateUser = userService.find(id);
         if (updateUser != null) {
@@ -47,7 +47,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteEmployee(@PathVariable("id") Integer id) {
+    public void deleteUser(@PathVariable("id") Integer id) {
         userService.delete(id);
     }
 }

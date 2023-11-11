@@ -29,9 +29,9 @@ public class RoomItemService {
     }
 
     @Transactional
-    public void update(Integer id, RoomItem roomItem) {
+    public RoomItem update(Integer id, RoomItem roomItem) {
         roomItem.setId(id);
-        roomItemRepository.save(roomItem);
+        return roomItemRepository.save(roomItem);
     }
 
     @Transactional
