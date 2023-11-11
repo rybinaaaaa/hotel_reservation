@@ -43,6 +43,11 @@ public class RoomController {
         return roomService.getFilteredRoom(page, perPage, from, to, category, roomType, roomClassification, priceFrom, priceTo);
     }
 
+    @GetMapping("/{id}")
+    public Room show(@PathVariable("id") Integer id) {
+        return roomService.find(id);
+    }
+
     @PostMapping("/add")
     public ResponseEntity<Room> addRoom(@RequestBody Room room) {
         if (room == null) {

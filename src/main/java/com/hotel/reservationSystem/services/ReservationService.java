@@ -31,9 +31,10 @@ public class ReservationService {
     }
 
     @Transactional
-    public void update(Integer id, Reservation reservation) {
+    public Reservation update(Integer id, Reservation reservation) {
         reservation.setId(id);
         reservationRepository.save(reservation);
+        return reservation;
     }
 
     @Transactional

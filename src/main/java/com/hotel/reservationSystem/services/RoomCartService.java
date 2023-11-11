@@ -42,4 +42,8 @@ public class RoomCartService {
     public List<RoomCart> findAll() {
         return roomCartRepository.findAll();
     }
+
+    public void save(List<RoomCart> roomCarts) {
+        roomCartRepository.saveAll(roomCarts);
+    }
 }
