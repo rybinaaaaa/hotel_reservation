@@ -6,11 +6,7 @@ import java.util.Date;
 
 @Entity
 
-public class Payment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
+public class Payment extends SuperMappedByClass{
     @Column
     private Double amount;
 
@@ -33,14 +29,6 @@ public class Payment {
         this.amount = amount;
         this.billNumber = billNumber;
         this.date = date;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public Double getAmount() {

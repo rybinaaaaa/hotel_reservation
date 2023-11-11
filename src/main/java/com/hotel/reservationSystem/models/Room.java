@@ -6,11 +6,7 @@ import java.util.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Room {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
+public class Room extends SuperMappedByClass{
     @Column
     private String name;
 
@@ -58,14 +54,6 @@ public class Room {
             return;
         }
         categories.removeIf(c -> Objects.equals(c.getId(), category.getId()));
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getName() {

@@ -47,8 +47,8 @@ public class PaymentService {
     }
 
     @Transactional
-    public void save(Payment payment) {
-        paymentRepository.save(payment);
+    public Payment save(Payment payment) {
+        return paymentRepository.save(payment);
     }
 
     @Transactional

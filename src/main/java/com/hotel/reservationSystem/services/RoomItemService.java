@@ -21,8 +21,8 @@ public class RoomItemService {
     }
 
     @Transactional
-    public void save(RoomItem roomItem) {
-        roomItemRepository.save(roomItem);
+        public RoomItem save(RoomItem roomItem) {
+        return roomItemRepository.save(roomItem);
     }
 
     @Transactional

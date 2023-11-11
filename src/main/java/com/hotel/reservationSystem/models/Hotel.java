@@ -8,11 +8,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Hotel {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
+public class Hotel extends SuperMappedByClass {
     @Column
     private String name;
 
@@ -28,14 +24,6 @@ public class Hotel {
     public Hotel(String name, String address) {
         this.name = name;
         this.address = address;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getName() {

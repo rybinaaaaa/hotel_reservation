@@ -8,7 +8,6 @@ import java.util.List;
 
 @Entity
 public class RoomItem extends Room {
-
     @Column(name = "room_number")
     private Integer roomNumber;
 

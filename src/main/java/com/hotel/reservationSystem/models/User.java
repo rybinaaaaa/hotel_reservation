@@ -7,10 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class User extends SuperMappedByClass {
 
     @Column
     private Integer phone;
@@ -61,10 +58,6 @@ public class User {
             return;
         }
         reservations.removeIf(r -> Objects.equals(r.getId(), reservation.getId()));
-    }
-
-    public Integer getId() {
-        return id;
     }
 
     public Integer getPhone() {
@@ -123,7 +116,4 @@ public class User {
         this.reservations = reservations;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
 }

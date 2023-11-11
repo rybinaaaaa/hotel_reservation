@@ -69,8 +69,8 @@ public class RoomService {
     }
 
     @Transactional
-    public void save(Room room) {
-        roomRepository.save(room);
+    public Room save(Room room) {
+        return roomRepository.save(room);
     }
 
     @Transactional

@@ -7,11 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Reservation {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
+public class Reservation extends  SuperMappedByClass{
     @Temporal(TemporalType.DATE)
     private Date createdAt;
 
@@ -29,14 +25,6 @@ public class Reservation {
 
     public Reservation(Date createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public Date getCreatedAt() {

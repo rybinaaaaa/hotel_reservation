@@ -25,9 +25,9 @@ public class ReservationService {
     }
 
     @Transactional
-    public void save(Reservation reservation) {
+    public Reservation save(Reservation reservation) {
         enrichReservation(reservation);
-        reservationRepository.save(reservation);
+        return reservationRepository.save(reservation);
     }
 
     @Transactional

@@ -53,8 +53,8 @@ public class CategoryService {
     }
 
     @Transactional
-    public void save(Category category) {
-        categoryRepository.save(category);
+    public Category save(Category category) {
+        return categoryRepository.save(category);
     }
 
     @Transactional

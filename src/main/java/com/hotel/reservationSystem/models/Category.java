@@ -5,11 +5,7 @@ import jakarta.persistence.*;
 import java.util.*;
 
 @Entity
-public class Category {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
+public class Category extends SuperMappedByClass {
     @Column
     private String name;
 
@@ -59,11 +55,4 @@ public class Category {
         this.rooms = rooms;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 }

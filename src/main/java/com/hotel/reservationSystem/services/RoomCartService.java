@@ -20,8 +20,8 @@ public class RoomCartService {
     }
 
     @Transactional
-    public void save(RoomCart roomCart) {
-        roomCartRepository.save(roomCart);
+    public RoomCart save(RoomCart roomCart) {
+        return roomCartRepository.save(roomCart);
     }
 
     @Transactional

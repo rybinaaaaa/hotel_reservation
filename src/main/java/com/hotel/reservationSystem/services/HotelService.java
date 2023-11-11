@@ -20,8 +20,8 @@ public class HotelService {
     }
 
     @Transactional
-    public void save(Hotel hotel) {
-        hotelRepository.save(hotel);
+    public Hotel save(Hotel hotel) {
+        return hotelRepository.save(hotel);
     }
 
     @Transactional

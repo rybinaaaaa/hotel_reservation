@@ -7,11 +7,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "room_cart")
-public class RoomCart {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
+public class RoomCart extends SuperMappedByClass {
     @Column(name = "reserved_from")
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "dd/MM/yyyy")
@@ -36,14 +32,6 @@ public class RoomCart {
     public RoomCart(Date reservedFrom, Date reservedTo) {
         this.reservedFrom = reservedFrom;
         this.reservedTo = reservedTo;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public Date getReservedFrom() {
