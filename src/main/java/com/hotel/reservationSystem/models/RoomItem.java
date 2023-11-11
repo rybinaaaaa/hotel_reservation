@@ -17,7 +17,7 @@ public class RoomItem extends BaseEntity {
     private List<RoomCart> roomCarts;
 
     @ManyToOne
-    @JoinColumn(referencedColumnName = "room_id", name = "id")
+    @JoinColumn(referencedColumnName = "id", name = "room_id")
     private Room room;
 
     public RoomItem() {
