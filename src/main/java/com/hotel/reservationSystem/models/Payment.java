@@ -4,9 +4,9 @@ import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Date;
 
-@Entity
+@jakarta.persistence.Entity
 
-public class Payment extends SuperMappedByClass{
+public class Payment extends BaseEntity {
     @Column
     private Double amount;
 

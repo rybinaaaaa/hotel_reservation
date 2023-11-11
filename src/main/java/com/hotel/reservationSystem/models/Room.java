@@ -4,9 +4,9 @@ import jakarta.persistence.*;
 
 import java.util.*;
 
-@Entity
+@jakarta.persistence.Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Room extends SuperMappedByClass{
+public class Room extends BaseEntity {
     @Column
     private String name;
 

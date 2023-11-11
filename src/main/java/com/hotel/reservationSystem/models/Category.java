@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 
 import java.util.*;
 
-@Entity
-public class Category extends SuperMappedByClass {
+@jakarta.persistence.Entity
+public class Category extends BaseEntity {
     @Column
     private String name;
 

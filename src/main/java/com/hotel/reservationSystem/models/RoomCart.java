@@ -5,9 +5,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
-@Entity
+@jakarta.persistence.Entity
 @Table(name = "room_cart")
-public class RoomCart extends SuperMappedByClass {
+public class RoomCart extends BaseEntity {
     @Column(name = "reserved_from")
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "dd/MM/yyyy")

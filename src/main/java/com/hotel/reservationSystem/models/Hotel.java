@@ -2,13 +2,12 @@ package com.hotel.reservationSystem.models;
 
 import jakarta.persistence.*;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-@Entity
-public class Hotel extends SuperMappedByClass {
+@jakarta.persistence.Entity
+public class Hotel extends BaseEntity {
     @Column
     private String name;
 

@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@Entity
-public class User extends SuperMappedByClass {
+@jakarta.persistence.Entity
+public class User extends BaseEntity {
 
     @Column
     private Integer phone;

@@ -6,8 +6,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-@Entity
-public class Reservation extends  SuperMappedByClass{
+@jakarta.persistence.Entity
+public class Reservation extends BaseEntity {
     @Temporal(TemporalType.DATE)
     private Date createdAt;
 
