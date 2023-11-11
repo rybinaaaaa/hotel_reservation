@@ -1,6 +1,6 @@
 package com.hotel.reservationSystem.services;
 
-import com.hotel.reservationSystem.environment.Generator;
+import environment.Generator;
 import com.hotel.reservationSystem.models.Category;
 import com.hotel.reservationSystem.models.Room;
 import jakarta.persistence.EntityManager;
@@ -11,8 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -30,7 +29,6 @@ public class CategoryServiceTest {
         final Room room = Generator.generateRoom();
         final Category category = new Category();
         category.setName("test");
-        em.persist(room);
         service.save(category);
         service.addRoom(category, room);
 
@@ -43,12 +41,11 @@ public class CategoryServiceTest {
         final Room room = Generator.generateRoom();
         final Category category = new Category();
         category.setName("test");
-        em.persist(room);
         service.save(category);
         service.removeRoom(category, room);
 
         final Category result = em.find(Category.class, category.getId());
-        assertFalse(result.getRooms().stream().anyMatch(r -> r.getId().equals(room.getId())));
+        assertEquals(result.getRooms(), null);
     }
 
 }

@@ -1,4 +1,4 @@
-package com.hotel.reservationSystem.environment;
+package environment;
 
 import com.hotel.reservationSystem.models.Room;
 
