@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    UserService userService;
+    private final UserService userService;
 
     @Autowired
     public UserController(UserService userService) {
@@ -25,29 +25,29 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public User getUser(@PathVariable("id") int id) {
+    public User getUser(@PathVariable("id") Integer id) {
         return userService.find(id);
     }
 
     @PostMapping()
-    ResponseEntity<User> create(@RequestBody User user) {
+    public ResponseEntity<User> create(@RequestBody User user) {
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
     }
 
-    @PutMapping("{id}")
-    public  ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable Integer id){
+    @PatchMapping("/{id}")
+    public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable("id") Integer id) {
         User updateUser = userService.find(id);
-        if(updateUser != null){
-            updateUser.//TO DO
+        if (updateUser != null) {
+            return new ResponseEntity<>(userService.update(id, user), HttpStatus.CREATED);
         }
-        else {
-            user.setId(id);
-            return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
-        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @DeleteMapping("{id}")
-    void deleteEmployee(@PathVariable Integer id) {
+    @DeleteMapping("/{id}")
+    public void deleteEmployee(@PathVariable("id") Integer id) {
         userService.delete(id);
     }
 }

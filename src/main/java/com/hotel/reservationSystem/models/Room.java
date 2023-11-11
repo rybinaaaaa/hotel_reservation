@@ -1,10 +1,15 @@
 package com.hotel.reservationSystem.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
-@jakarta.persistence.Entity
+@Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Room extends BaseEntity {
     @Column
@@ -27,7 +32,11 @@ public class Room extends BaseEntity {
     @ManyToMany(mappedBy = "rooms")
     private List<Category> categories;
 
-    @ManyToOne
+    @OneToMany(mappedBy = "room")
+    private List<RoomItem> roomItems;
+
+    @ManyToOne()
+    @JoinColumn(name = "hotel_id", referencedColumnName = "id")
     private Hotel hotel;
 
     public Room() {
@@ -110,5 +119,33 @@ public class Room extends BaseEntity {
 
     public void setHotel(Hotel hotel) {
         this.hotel = hotel;
+    }
+
+    public List<RoomItem> getRoomItems() {
+        return roomItems;
+    }
+
+    public void setRoomItems(List<RoomItem> roomItems) {
+        this.roomItems = roomItems;
+    }
+
+    public void addRoomItem(RoomItem roomItem) {
+        if (roomItem == null) return;
+        if (this.roomItems == null) {
+            this.roomItems = Collections.singletonList(roomItem);
+            return;
+        }
+        if (this.roomItems.stream().map(r -> Objects.equals(r.getId(), roomItem.getId())).findAny().isEmpty()) {
+            this.roomItems.add(roomItem);
+        }
+    }
+
+    public void removeRoomItem(Integer id) {
+        if (this.roomItems == null) return;
+        this.roomItems.removeIf(r -> Objects.equals(r.getId(), id));
+    }
+
+    public List<RoomItem> getFreeRoomItems(Date from, Date to) {
+        return this.roomItems.stream().filter(roomItem -> !roomItem.isReserved(from, to)).collect(Collectors.toList());
     }
 }

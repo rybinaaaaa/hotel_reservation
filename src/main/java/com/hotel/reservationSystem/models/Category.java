@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.*;
 
-@jakarta.persistence.Entity
+@Entity
 public class Category extends BaseEntity {
     @Column
     private String name;

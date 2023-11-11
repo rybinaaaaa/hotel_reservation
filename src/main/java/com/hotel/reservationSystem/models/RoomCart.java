@@ -5,7 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
-@jakarta.persistence.Entity
+@Entity
 @Table(name = "room_cart")
 public class RoomCart extends BaseEntity {
     @Column(name = "reserved_from")

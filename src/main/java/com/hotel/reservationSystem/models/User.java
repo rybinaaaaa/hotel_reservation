@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@jakarta.persistence.Entity
+@Entity
 public class User extends BaseEntity {
 
     @Column
@@ -53,10 +53,7 @@ public class User extends BaseEntity {
     }
 
     public void removeReservation(Reservation reservation) {
-        Objects.requireNonNull(reservation);
-        if (reservations == null) {
-            return;
-        }
+        if (reservations == null) return;
         reservations.removeIf(r -> Objects.equals(r.getId(), reservation.getId()));
     }
 

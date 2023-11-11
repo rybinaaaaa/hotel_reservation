@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Date;
 
-@jakarta.persistence.Entity
+@Entity
 
 public class Payment extends BaseEntity {
     @Column

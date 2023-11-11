@@ -66,9 +66,10 @@ public class UserService {
     }
 
     @Transactional
-    public void update(Integer id, User user) {
+    public User update(Integer id, User user) {
         user.setId(id);
         userRepository.save(user);
+        return user;
     }
 
     @Transactional

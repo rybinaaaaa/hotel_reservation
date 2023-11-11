@@ -1,13 +1,12 @@
 package com.hotel.reservationSystem.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Entity
-public class RoomItem extends Room {
+public class RoomItem extends BaseEntity {
     @Column(name = "room_number")
     private Integer roomNumber;
 
@@ -17,13 +16,18 @@ public class RoomItem extends Room {
     @OneToMany(mappedBy = "roomItem")
     private List<RoomCart> roomCarts;
 
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "room_id", name = "id")
+    private Room room;
+
     public RoomItem() {
     }
 
-    public RoomItem(String name, Double price, String description, RoomClassification roomClassification, RoomType roomType, Integer roomNumber, Boolean reserved) {
-        super(name, price, description, roomClassification, roomType);
+    public RoomItem(Integer roomNumber, Boolean reserved, List<RoomCart> roomCarts, Room room) {
         this.roomNumber = roomNumber;
         this.reserved = reserved;
+        this.roomCarts = roomCarts;
+        this.room = room;
     }
 
     public Integer getRoomNumber() {
@@ -48,5 +52,18 @@ public class RoomItem extends Room {
 
     public void setRoomCarts(List<RoomCart> roomCarts) {
         this.roomCarts = roomCarts;
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
+    public Boolean isReserved(Date from, Date to) {
+        if (this.roomCarts == null) return false;
+        return this.roomCarts.stream().map(r -> r.getReservedFrom().after(from) && r.getReservedTo().before(to)).findAny().isPresent();
     }
 }

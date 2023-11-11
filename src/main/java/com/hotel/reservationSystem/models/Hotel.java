@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-@jakarta.persistence.Entity
+@Entity
 public class Hotel extends BaseEntity {
     @Column
     private String name;

@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-@jakarta.persistence.Entity
+@Entity
 public class Reservation extends BaseEntity {
     @Temporal(TemporalType.DATE)
     private Date createdAt;
