@@ -41,9 +41,9 @@ public class PaymentService {
     }
 
     @Transactional
-    public void update(Integer id, Payment payment) {
+    public Payment update(Integer id, Payment payment) {
         payment.setId(id);
-        paymentRepository.save(payment);
+        return save(payment);
     }
 
     @Transactional
@@ -54,5 +54,19 @@ public class PaymentService {
     @Transactional
     public void delete(Integer id) {
         paymentRepository.deleteById(id);
+    }
+
+    @Transactional
+    public Payment setReservation(Payment payment, Reservation reservation) {
+        payment.setReservation(reservation);
+        reservation.setPayment(payment);
+        return save(payment);
+    }
+
+    @Transactional
+    public Payment deleteReservation(Payment payment, Reservation reservation) {
+        payment.setReservation(null);
+        reservation.setPayment(null);
+        return save(payment);
     }
 }
