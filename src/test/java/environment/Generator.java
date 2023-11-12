@@ -1,6 +1,7 @@
 package environment;
 
 import com.hotel.reservationSystem.models.Room;
+import com.hotel.reservationSystem.models.User;
 
 import java.util.Random;
 
@@ -32,4 +33,11 @@ public class Generator {
         return room;
 
     }
+
+    public static User generateUser() {
+        User user = new User();
+        user.setId(1);
+        return user;
+    }
+
 }
