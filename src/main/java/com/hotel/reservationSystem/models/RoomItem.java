@@ -2,8 +2,10 @@ package com.hotel.reservationSystem.models;
 
 import jakarta.persistence.*;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class RoomItem extends BaseEntity {
@@ -48,6 +50,24 @@ public class RoomItem extends BaseEntity {
 
     public void setRoom(Room room) {
         this.room = room;
+    }
+
+    public void addRoomCart(RoomCart roomCart) {
+        if (roomCart == null) return;
+        if (this.roomCarts == null) {
+            this.roomCarts = Collections.singletonList(roomCart);
+            roomCart.setRoomItem(this);
+            return;
+        }
+        if (this.roomCarts.stream().map(r -> Objects.equals(r.getId(), roomCart.getId())).findAny().isEmpty()) {
+            this.roomCarts.add(roomCart);
+            roomCart.setRoomItem(this);
+        }
+    }
+
+    public void deleteRoomCartById(Integer id) {
+        if (this.roomCarts == null) return;
+        this.roomCarts.removeIf(r -> Objects.equals(r.getId(), id));
     }
 
     public Boolean isReserved(Date from, Date to) {

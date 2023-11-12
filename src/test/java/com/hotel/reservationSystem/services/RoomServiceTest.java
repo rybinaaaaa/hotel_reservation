@@ -1,147 +1,126 @@
 package com.hotel.reservationSystem.services;
-import com.hotel.reservationSystem.models.Category;
-import com.hotel.reservationSystem.models.Room;
-import com.hotel.reservationSystem.repositories.RoomRepository;
+
+import com.hotel.reservationSystem.models.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
-class RoomServiceTest {
+@SpringBootTest
+@Transactional
+@TestPropertySource(locations = "classpath:application-test.properties")
+public class RoomServiceTest {
 
-    @Mock
-    private RoomRepository roomRepository;
+    private final RoomService roomService;
+    private final CategoryService categoryService;
+    private final RoomItemService roomItemService;
+    private final RoomCartService roomCartService;
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
-    @InjectMocks
-    private RoomService roomService;
+    private Room room1, room2, room3;
+
+    @Autowired
+    public RoomServiceTest(RoomService roomService, CategoryService categoryService, RoomItemService roomItemService, RoomCartService roomCartService) {
+        this.roomService = roomService;
+        this.categoryService = categoryService;
+        this.roomItemService = roomItemService;
+        this.roomCartService = roomCartService;
+    }
 
     @BeforeEach
-    void setUp() {
-        MockitoAnnotations.initMocks(this);
+    public void setup() throws ParseException {
+        Category category1 = new Category();
+        category1.setName("Pet friendly");
+        categoryService.save(category1);
+
+        Category category2 = new Category();
+        category2.setName("Best suggestion");
+        categoryService.save(category2);
+
+        this.room1 = createRoom("Room 1", RoomType.SINGLE, RoomClassification.STANDARD, 100.0, List.of(category1));
+        this.room2 = createRoom("Room 2", RoomType.DOUBLE, RoomClassification.DELUXE, 200.0, List.of(category1, category2));
+        this.room3 = createRoom("Room 3", RoomType.SINGLE, RoomClassification.DELUXE, 300.0, List.of(category2));
+
+        roomService.save(List.of(room1, room2, room3));
+
+        RoomItem roomItem1 = new RoomItem();
+        roomItemService.addRoomItemToRoom(room1, roomItem1);
+
+        RoomItem roomItem2 = new RoomItem();
+        roomItemService.addRoomItemToRoom(room2, roomItem2);
+
+        Date fromReserved1 = dateFormat.parse("01/10/2023");
+        Date toReserved1 = dateFormat.parse("05/10/2023");
+        RoomCart roomCart1 = new RoomCart(fromReserved1, toReserved1);
+        roomCartService.addRoomItemToRoomCart(roomCart1, roomItem1);
+
+        Date fromReserved2 = dateFormat.parse("15/10/2023");
+        Date toReserved2 = dateFormat.parse("20/10/2023");
+        RoomCart roomCart2 = new RoomCart(fromReserved2, toReserved2);
+        roomCartService.addRoomItemToRoomCart(roomCart1, roomItem1);
     }
 
     @Test
-    void testFindById() {
-        Room expectedRoom = new Room();
-        expectedRoom.setId(1);
-        when(roomRepository.findById(1)).thenReturn(java.util.Optional.of(expectedRoom));
+    public void whenFilterByPriceRange_thenCorrectRoomsReturned() {
+        List<Room> filteredRooms = roomService.getFilteredRoom(null, null, null, null, null, null, null, 150, 250);
 
-        Room actualRoom = roomService.find(1);
-
-        assertNotNull(actualRoom);
-        assertEquals(expectedRoom.getId(), actualRoom.getId());
+        List<Double> prices = filteredRooms.stream().map(Room::getPrice).toList();
+        assertTrue(prices.contains(200.0));
+        assertEquals(1, filteredRooms.size());
     }
 
     @Test
-    void testFindAll() {
-        List<Room> expectedRooms = Arrays.asList(new Room(), new Room(), new Room());
-        when(roomRepository.findAll()).thenReturn(expectedRooms);
-
-        List<Room> actualRooms = roomService.findAll();
-
-        assertNotNull(actualRooms);
-        assertEquals(expectedRooms.size(), actualRooms.size());
+    public void whenFilterByCategory_thenCorrectRoomsReturned() {
+        List<Room> filteredRooms = roomService.getFilteredRoom(null, null, null, null, "Pet friendly", null, null, null, null);
+        assertTrue(filteredRooms.stream()
+                .allMatch(room -> room.getCategories().stream()
+                        .anyMatch(category -> category.getName().equals("Pet friendly"))));
     }
 
     @Test
-    void testFindAllPaged() {
-        List<Room> expectedRooms = Arrays.asList(new Room(), new Room(), new Room());
-        int page = 0;
-        int perPage = 10;
-        when(roomRepository.findAll(PageRequest.of(page, perPage)).getContent()).thenReturn(expectedRooms);
+    public void whenFilterByRoomType_thenCorrectRoomsReturned() {
+        List<Room> filteredRooms = roomService.getFilteredRoom(null, null, null, null, null, "DOUBLE", null, null, null);
 
-        List<Room> actualRooms = roomService.findAll(page, perPage);
-
-        assertNotNull(actualRooms);
-        assertEquals(expectedRooms.size(), actualRooms.size());
+        assertTrue(filteredRooms.stream()
+                .allMatch(room -> room.getRoomType().equals(RoomType.DOUBLE)));
     }
 
     @Test
-    void testAddCategory() {
+    public void whenFilterByRoomClassification_thenCorrectRoomsReturned() {
+        List<Room> filteredRooms = roomService.getFilteredRoom(null, null, null, null, null, null, "STANDARD", null, null);
+
+        assertTrue(filteredRooms.stream()
+                .allMatch(room -> room.getRoomClassification().equals(RoomClassification.STANDARD)));
+    }
+
+    @Test
+    void whenGetFilteredRoomsByDateRange_thenOnlyAvailableRoomsReturned() throws Exception {
+        Date from = dateFormat.parse("06/10/2023");
+        Date to = dateFormat.parse("14/10/2023");
+
+        List<Room> availableRooms = roomService.getFilteredRoom(null, null, from, to, null, null, null, null, null);
+
+        assertTrue(availableRooms.contains(roomService.find(room2.getId())));
+        assertFalse(availableRooms.contains(roomService.find(room1.getId())));
+    }
+
+
+    private Room createRoom(String name, RoomType type, RoomClassification classification, Double price, List<Category> categories) {
         Room room = new Room();
-        Category category = new Category();
-
-        roomService.addCategory(category, room);
-        assertTrue(room.getCategories().contains(category));
-    }
-
-    @Test
-    void testRemoveCategory() {
-        Room room = new Room();
-        Category category = new Category();
-        room.addCategory(category);
-
-        roomService.removeCategory(category, room);
-
-        assertFalse(room.getCategories().contains(category));
-    }
-
-    @Test
-    void testUpdate() {
-        Room room = new Room();
-        room.setId(1);
-
-        when(roomRepository.save(room)).thenReturn(room);
-        Room updatedRoom = roomService.update(1, room);
-
-        assertNotNull(updatedRoom);
-        assertEquals(room.getId(), updatedRoom.getId());
-    }
-
-    @Test
-    void testSave() {
-        Room room = new Room();
-
-        when(roomRepository.save(room)).thenReturn(room);
-        Room savedRoom = roomService.save(room);
-
-        assertNotNull(savedRoom);
-        assertEquals(room, savedRoom);
-    }
-
-    @Test
-    void testDelete() {
-        int roomId = 1;
-
-        roomService.delete(roomId);
-
-        verify(roomRepository, times(1)).deleteById(roomId);
-    }
-
-    @Test
-    void testGetFilteredRoom() {
-        List<Room> rooms = new ArrayList<>();
-        Room room1 = new Room();
-        Room room2 = new Room();
-        Room room3 = new Room();
-        rooms.add(room1);
-        rooms.add(room2);
-        rooms.add(room3);
-
-        Date from = new Date();
-        Date to = new Date();
-        String category = "Standard";
-        String roomType = "Single";
-        String roomClassification = "Economy";
-        int priceFrom = 50;
-        int priceTo = 100;
-
-        when(roomRepository.findAll()).thenReturn(rooms);
-
-        List<Room> filteredRooms = roomService.getFilteredRoom(null, null, from, to, category, roomType, roomClassification, priceFrom, priceTo);
-
-        assertNotNull(filteredRooms);
-        assertEquals(3, filteredRooms.size());
+        room.setName(name);
+        room.setRoomType(type);
+        room.setRoomClassification(classification);
+        room.setPrice(price);
+        room.setCategories(categories);
+        return room;
     }
 }
-

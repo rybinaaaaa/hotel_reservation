@@ -113,4 +113,10 @@ public class RoomService {
         hotel.addRoom(room);
         return save(room);
     }
+
+    @Transactional
+    public List<Room> save(List<Room> rooms) {
+        roomRepository.saveAll(rooms);
+        return rooms;
+    }
 }

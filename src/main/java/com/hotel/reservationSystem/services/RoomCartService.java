@@ -2,6 +2,7 @@ package com.hotel.reservationSystem.services;
 
 import com.hotel.reservationSystem.models.Reservation;
 import com.hotel.reservationSystem.models.RoomCart;
+import com.hotel.reservationSystem.models.RoomItem;
 import com.hotel.reservationSystem.repositories.RoomCartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,6 +63,13 @@ public class RoomCartService {
             roomCart.setReservation(null);
             reservation.deleteRoomCartById(reservation.getId());
         }
+        return save(roomCart);
+    }
+
+    @Transactional
+    public RoomCart addRoomItemToRoomCart(RoomCart roomCart, RoomItem roomItem) {
+        roomCart.setRoomItem(roomItem);
+        roomItem.addRoomCart(roomCart);
         return save(roomCart);
     }
 }

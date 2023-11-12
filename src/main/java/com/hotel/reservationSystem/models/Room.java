@@ -150,6 +150,7 @@ public class Room extends BaseEntity {
     }
 
     public List<RoomItem> getFreeRoomItems(Date from, Date to) {
+        if (this.roomItems == null) return Collections.emptyList();
         return this.roomItems.stream().filter(roomItem -> !roomItem.isReserved(from, to)).collect(Collectors.toList());
     }
 }
