@@ -56,9 +56,12 @@ public class RoomCartService {
     }
 
     @Transactional
-    public RoomCart deleteReservation(RoomCart roomCart, Reservation reservation) {
-        roomCart.setReservation(null);
-        reservation.deleteRoomCartById(reservation.getId());
+    public RoomCart deleteReservation(RoomCart roomCart) {
+        Reservation reservation = roomCart.getReservation();
+        if (reservation != null) {
+            roomCart.setReservation(null);
+            reservation.deleteRoomCartById(reservation.getId());
+        }
         return save(roomCart);
     }
 }

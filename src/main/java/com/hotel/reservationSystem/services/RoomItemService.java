@@ -55,9 +55,12 @@ public class RoomItemService {
     }
 
     @Transactional
-    public RoomItem deleteRoomItemFromRoom(Room room, RoomItem roomItem) {
-        roomItem.setRoom(null);
-        room.removeRoomItem(roomItem.getId());
+    public RoomItem deleteRoomItemFromRoom(RoomItem roomItem) {
+        Room room = roomItem.getRoom();
+        if (room != null) {
+            roomItem.setRoom(null);
+            room.removeRoomItem(roomItem.getId());
+        }
         return save(roomItem);
     }
 }
