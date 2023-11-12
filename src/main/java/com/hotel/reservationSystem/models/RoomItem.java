@@ -72,6 +72,8 @@ public class RoomItem extends BaseEntity {
 
     public Boolean isReserved(Date from, Date to) {
         if (this.roomCarts == null) return false;
-        return this.roomCarts.stream().map(r -> r.getReservedFrom().after(from) && r.getReservedTo().before(to)).findAny().isPresent();
+        return this.roomCarts.stream().anyMatch(r ->
+               !(r.getReservedTo().before(from) || r.getReservedFrom().after(to))
+        );
     }
 }

@@ -58,15 +58,15 @@ public class RoomServiceTest {
         RoomItem roomItem2 = new RoomItem();
         roomItemService.addRoomItemToRoom(room2, roomItem2);
 
-        Date fromReserved1 = dateFormat.parse("01/10/2023");
-        Date toReserved1 = dateFormat.parse("05/10/2023");
+        Date fromReserved1 = dateFormat.parse("07/10/2023");
+        Date toReserved1 = dateFormat.parse("10/10/2023");
         RoomCart roomCart1 = new RoomCart(fromReserved1, toReserved1);
         roomCartService.addRoomItemToRoomCart(roomCart1, roomItem1);
 
         Date fromReserved2 = dateFormat.parse("15/10/2023");
         Date toReserved2 = dateFormat.parse("20/10/2023");
         RoomCart roomCart2 = new RoomCart(fromReserved2, toReserved2);
-        roomCartService.addRoomItemToRoomCart(roomCart1, roomItem1);
+        roomCartService.addRoomItemToRoomCart(roomCart2, roomItem2);
     }
 
     @Test
