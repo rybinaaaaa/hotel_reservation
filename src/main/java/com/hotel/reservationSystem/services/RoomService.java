@@ -88,7 +88,7 @@ public class RoomService {
         if (Objects.nonNull(from) && Objects.nonNull(to)) {
             rooms = getFreeRooms(from, to, rooms);
         }
-        rooms = rooms.stream().filter(r -> category == null || r.getCategories().stream().map(Category::getName).toList().contains(category)).collect(Collectors.toList());
+        rooms = rooms.stream().filter(r -> category == null  || r.getCategories().stream().map(Category::getName).toList().contains(category)).collect(Collectors.toList());
         rooms = rooms.stream().filter(r -> roomType == null || r.getRoomType().name().equalsIgnoreCase(roomType)).collect(Collectors.toList());
         rooms = rooms.stream().filter(r -> roomType == null || r.getRoomClassification().name().equalsIgnoreCase(roomClassification)).collect(Collectors.toList());
         rooms = rooms.stream().filter(r -> priceFrom == null || r.getPrice() >= priceFrom).collect(Collectors.toList());
