@@ -51,7 +51,14 @@ public class RoomCartService {
     @Transactional
     public RoomCart setReservation(RoomCart roomCart, Reservation reservation) {
         roomCart.setReservation(reservation);
-        reservation.addRoomCart(roomCart); // 2 сторона для кеширования гибернейт
+        reservation.addRoomCart(roomCart); // 2 side for hibernate cashing
+        return save(roomCart);
+    }
+
+    @Transactional
+    public RoomCart deleteReservation(RoomCart roomCart, Reservation reservation) {
+        roomCart.setReservation(null);
+        reservation.deleteRoomCartById(reservation.getId());
         return save(roomCart);
     }
 }
