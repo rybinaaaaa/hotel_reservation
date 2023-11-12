@@ -1,5 +1,6 @@
 package com.hotel.reservationSystem.services;
 
+import com.hotel.reservationSystem.models.Reservation;
 import com.hotel.reservationSystem.models.RoomCart;
 import com.hotel.reservationSystem.repositories.RoomCartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,5 +46,12 @@ public class RoomCartService {
 
     public void save(List<RoomCart> roomCarts) {
         roomCartRepository.saveAll(roomCarts);
+    }
+
+    @Transactional
+    public RoomCart setReservation(RoomCart roomCart, Reservation reservation) {
+        roomCart.setReservation(reservation);
+        reservation.addRoomCart(roomCart); // 2 сторона для кеширования гибернейт
+        return save(roomCart);
     }
 }

@@ -42,15 +42,17 @@ public class ReservationService {
         reservationRepository.deleteById(id);
     }
 
-    @Transactional
-    public void addRoomCart(Reservation reservation, RoomCart roomCart) {
-        reservation.addRoomCart(roomCart);
-    }
+//    УДАЛЯЕМ!
 
-    @Transactional
-    public void deleteRoomById(Integer id, Reservation reservation) {
-        reservation.deleteRoomCartById(id);
-    }
+//    @Transactional
+//    public void addRoomCart(Reservation reservation, RoomCart roomCart) {
+//        reservation.addRoomCart(roomCart);
+//    }
+//
+//    @Transactional
+//    public void deleteRoomById(Integer id, Reservation reservation) {
+//        reservation.deleteRoomCartById(id);
+//    }
 
     public List<Reservation> findAll() {
         return reservationRepository.findAll(Sort.by(Sort.Direction.ASC, "created_at"));

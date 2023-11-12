@@ -35,7 +35,7 @@ public class Room extends BaseEntity {
     @OneToMany(mappedBy = "room")
     private List<RoomItem> roomItems;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "hotel_id", referencedColumnName = "id")
     private Hotel hotel;
 
