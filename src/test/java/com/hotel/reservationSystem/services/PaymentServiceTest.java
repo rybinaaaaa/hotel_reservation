@@ -33,7 +33,7 @@ public class PaymentServiceTest {
 
         paymentService.addPaymentToReservation(payment, reservation);
 
-        Payment result = paymentService.find(1);
+        Payment result = paymentService.find(payment.getId());
         assertEquals(result,result.getReservation().getPayment());
 
     }
@@ -64,11 +64,11 @@ public class PaymentServiceTest {
         reservationService.save(reservation);
 
         paymentService.addPaymentToReservation(payment, reservation);
-        Payment result = paymentService.find(1);
+        Payment result = paymentService.find(payment.getId());
         assertEquals(result, result.getReservation().getPayment());
         paymentService.deletePaymentFromReservation(payment);
 
-        result = paymentService.find(1);
+        result = paymentService.find(payment.getId());
         assertNull(result.getReservation());
     }
 
