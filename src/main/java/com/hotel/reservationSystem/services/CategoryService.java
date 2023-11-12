@@ -39,6 +39,7 @@ public class CategoryService {
     @Transactional
     public void addRoom(Category category, Room room) {
         category.addRoom(room);
+        save(category);
     }
 
     @Transactional

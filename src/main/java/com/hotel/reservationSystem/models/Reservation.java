@@ -13,11 +13,12 @@ public class Reservation extends BaseEntity {
 
     @OneToMany(mappedBy = "reservation")
     private List<RoomCart> roomCarts;
+
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
-    @OneToOne
-    @JoinColumn(name = "payment_id", referencedColumnName = "id")
+
+    @OneToOne(mappedBy = "reservation")
     private Payment payment;
 
     public Reservation() {

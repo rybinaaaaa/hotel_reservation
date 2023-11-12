@@ -1,5 +1,5 @@
 package com.hotel.reservationSystem.models;
 
 public enum RoomClassification {
-    LUX, DELUXE, STANDARD, ECONOM
+    LUX, DELUXE, STANDARD, ECONOMY
 }

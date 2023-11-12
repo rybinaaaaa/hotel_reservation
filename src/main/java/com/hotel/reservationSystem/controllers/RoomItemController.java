@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 //to check in the morning
 @RestController
-@RequestMapping("/room-items")
+@RequestMapping("/room_items")
 public class RoomItemController {
-    RoomItemService service;
+    private final RoomItemService service;
 
     @Autowired
     public RoomItemController(RoomItemService service) {

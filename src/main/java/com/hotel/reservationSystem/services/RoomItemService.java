@@ -46,12 +46,4 @@ public class RoomItemService {
     public List<RoomItem> findAll() {
         return roomItemRepository.findAll();
     }
-
-    public List<RoomItem> findReserved() {
-        return roomItemRepository.findByReservedTrue();
-    }
-
-    public List<RoomItem> findNotReserved() {
-        return roomItemRepository.findByReservedFalse();
-    }
 }

@@ -18,7 +18,7 @@ public class Payment extends BaseEntity {
     private Date date;
 
     @OneToOne
-    @JoinColumn(name = "reservation_id")
+    @JoinColumn(name = "reservation_id", referencedColumnName = "id")
     private Reservation reservation;
 
     public Payment() {
