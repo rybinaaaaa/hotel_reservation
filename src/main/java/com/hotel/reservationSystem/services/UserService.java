@@ -63,6 +63,8 @@ public class UserService {
 
     @Transactional
     public User save(User user) {
+        if(user.getRole() == null)
+            user.setDefaultRole();
         return userRepository.save(user);
     }
 

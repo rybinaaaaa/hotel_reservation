@@ -101,6 +101,7 @@ public class User extends BaseEntity {
     public Role getRole() {
         return role;
     }
+    public void setDefaultRole(){ this.role = Role.ADMIN; }
 
     public void setRole(Role role) {
         this.role = role;

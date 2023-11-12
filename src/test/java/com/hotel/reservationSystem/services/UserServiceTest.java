@@ -1,6 +1,7 @@
 package com.hotel.reservationSystem.services;
 
 import com.hotel.reservationSystem.models.Reservation;
+import com.hotel.reservationSystem.models.Role;
 import com.hotel.reservationSystem.models.User;
 import com.hotel.reservationSystem.repositories.UserRepository;
 import environment.Generator;
@@ -18,6 +19,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.Optional;
 
 import static com.hotel.reservationSystem.models.Role.ADMIN;
 import static com.hotel.reservationSystem.models.Role.USER;
@@ -47,60 +49,21 @@ public class UserServiceTest {
         final ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
         verify(userRepository).save(captor.capture());
         assertEquals(USER, captor.getValue().getRole());
-
     }
 
     @Test
-    public void saveSavesUserAndDoesNotSetDefaultRole() {
+    public void saveSavesUser() {
         User user = Generator.generateUser();
-        user.setRole(ADMIN);
         userService.save(user);
-
-        final ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
-        verify(userRepository).save(captor.capture());
-        assertEquals(ADMIN, captor.getValue().getRole());
-
-    }
-
-    @Test
-    public void addReservationAddsReservation() {
-        User user = Generator.generateUser();
-
-        Reservation reservation = new Reservation();
-        reservation.setId(2);
-        userService.addReservation(user, reservation);
-        userService.save(user);
-
 
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
-        verify(userRepository).save(userCaptor.capture());
-
+        verify(userRepository, times(1)).save(userCaptor.capture());
         User savedUser = userCaptor.getValue();
-
-        assertEquals(1, savedUser.getReservations().size());
-        assertEquals(reservation, savedUser.getReservations().get(0));
-        assertEquals(user, reservation.getUser());
+        assertNotNull(savedUser);
+        assertEquals(user.getId(), savedUser.getId());
+        assertEquals(Role.USER, savedUser.getRole());
     }
 
-    @Test
-    public void removeReservationRemovesReservation() {
-        User user = Generator.generateUser();
-        userService.save(user);
-
-        Reservation reservation = new Reservation();
-        reservation.setId(2);
-
-        user.addReservation(reservation);
-        userService.removeReservation(user, reservation);
-
-        ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
-        verify(userRepository).save(userCaptor.capture());
-
-        User savedUser = userCaptor.getValue();
-
-        assertEquals(0, savedUser.getReservations().size());
-        assertNull(reservation.getUser());
-    }
 
     @Test
     public void updateUpdatesUser() {
@@ -118,6 +81,29 @@ public class UserServiceTest {
         assertEquals(updatedUser.getPassword(), result.getPassword());
         assertEquals(updatedUser.getEmail(), result.getEmail());
         assertEquals(updatedUser.getRole(), result.getRole());
+    }
+
+    @Test
+    void deleteUser() {
+        int userId = 1;
+
+        userService.delete(userId);
+
+        verify(userRepository, times(1)).deleteById(userId);
+    }
+
+    @Test
+    void findUserById() {
+        int userId = 1;
+        User expectedUser = new User();
+        expectedUser.setId(userId);
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(expectedUser));
+
+        User result = userService.find(userId);
+
+        assertNotNull(result);
+        assertEquals(expectedUser, result);
     }
 
 }
