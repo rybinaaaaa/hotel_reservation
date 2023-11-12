@@ -10,9 +10,6 @@ public class RoomItem extends BaseEntity {
     @Column(name = "room_number")
     private Integer roomNumber;
 
-    @Column
-    private Boolean reserved;
-
     @OneToMany(mappedBy = "roomItem")
     private List<RoomCart> roomCarts;
 
@@ -23,9 +20,8 @@ public class RoomItem extends BaseEntity {
     public RoomItem() {
     }
 
-    public RoomItem(Integer roomNumber, Boolean reserved, List<RoomCart> roomCarts, Room room) {
+    public RoomItem(Integer roomNumber, List<RoomCart> roomCarts, Room room) {
         this.roomNumber = roomNumber;
-        this.reserved = reserved;
         this.roomCarts = roomCarts;
         this.room = room;
     }
@@ -36,14 +32,6 @@ public class RoomItem extends BaseEntity {
 
     public void setRoomNumber(Integer roomNumber) {
         this.roomNumber = roomNumber;
-    }
-
-    public Boolean getReserved() {
-        return reserved;
-    }
-
-    public void setReserved(Boolean reserved) {
-        this.reserved = reserved;
     }
 
     public List<RoomCart> getRoomCarts() {

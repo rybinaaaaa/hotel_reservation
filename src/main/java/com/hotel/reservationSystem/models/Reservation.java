@@ -17,7 +17,7 @@ public class Reservation extends BaseEntity {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
     @OneToOne
-    @JoinColumn(name = "payment_id")
+    @JoinColumn(name = "payment_id", referencedColumnName = "id")
     private Payment payment;
 
     public Reservation() {
