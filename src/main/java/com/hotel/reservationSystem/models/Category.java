@@ -9,11 +9,7 @@ public class Category extends BaseEntity {
     @Column
     private String name;
 
-    @ManyToMany
-    @JoinTable(name = "category_room",
-            joinColumns = @JoinColumn(name = "category_id"),
-            inverseJoinColumns = @JoinColumn(name = "room_id")
-    )
+    @ManyToMany(mappedBy = "categories", cascade = CascadeType.ALL)
     private List<Room> rooms;
 
     public Category() {

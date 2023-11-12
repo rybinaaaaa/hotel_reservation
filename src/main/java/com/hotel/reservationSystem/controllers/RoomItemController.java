@@ -1,7 +1,6 @@
 package com.hotel.reservationSystem.controllers;
 
 import com.hotel.reservationSystem.models.RoomItem;
-import com.hotel.reservationSystem.models.User;
 import com.hotel.reservationSystem.services.RoomItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 //to check in the morning
 @RestController
 @RequestMapping("/room_items")
@@ -51,5 +51,4 @@ public class RoomItemController {
     public void deleteRoomItem(@PathVariable("id") Integer id) {
         service.delete(id);
     }
-
 }
