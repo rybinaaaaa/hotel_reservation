@@ -61,7 +61,7 @@ public class Hotel extends BaseEntity {
         }
     }
 
-    public void deleteRoomById(Integer id) {
+    public void removeRoomById(Integer id) {
         if (this.rooms == null) return;
         this.rooms.removeIf(r -> Objects.equals(r.getId(), id));
     }

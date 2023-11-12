@@ -46,4 +46,18 @@ public class RoomItemService {
     public List<RoomItem> findAll() {
         return roomItemRepository.findAll();
     }
+
+    @Transactional
+    public RoomItem addRoomItemToRoom(Room room, RoomItem roomItem) {
+        roomItem.setRoom(room);
+        room.addRoomItem(roomItem);
+        return save(roomItem);
+    }
+
+    @Transactional
+    public RoomItem deleteRoomItemFromRoom(Room room, RoomItem roomItem) {
+        roomItem.setRoom(null);
+        room.removeRoomItem(roomItem.getId());
+        return save(roomItem);
+    }
 }

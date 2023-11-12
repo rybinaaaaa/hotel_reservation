@@ -57,16 +57,19 @@ public class PaymentService {
     }
 
     @Transactional
-    public Payment setReservation(Payment payment, Reservation reservation) {
+    public Payment addPaymentToReservation(Payment payment, Reservation reservation) {
         payment.setReservation(reservation);
         reservation.setPayment(payment);
         return save(payment);
     }
 
     @Transactional
-    public Payment deleteReservation(Payment payment, Reservation reservation) {
-        payment.setReservation(null);
-        reservation.setPayment(null);
+    public Payment deletePaymentFromReservation(Payment payment) {
+        Reservation reservation = payment.getReservation();
+        if (reservation != null) {
+            payment.setReservation(null);
+            reservation.setPayment(null);
+        }
         return save(payment);
     }
 }

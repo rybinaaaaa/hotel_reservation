@@ -1,9 +1,6 @@
 package com.hotel.reservationSystem.services;
 
-import com.hotel.reservationSystem.models.Category;
-import com.hotel.reservationSystem.models.Room;
-import com.hotel.reservationSystem.models.RoomClassification;
-import com.hotel.reservationSystem.models.RoomType;
+import com.hotel.reservationSystem.models.*;
 import com.hotel.reservationSystem.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -98,5 +95,22 @@ public class RoomService {
         rooms = rooms.stream().filter(r -> priceTo == null || r.getPrice() <= priceTo).collect(Collectors.toList());
 
         return rooms;
+    }
+
+    @Transactional
+    public Room deleteRoomFromHotel(Room room) {
+        Hotel hotel = room.getHotel();
+        if (hotel != null) {
+            room.setHotel(null);
+            hotel.removeRoomById(room.getId());
+        }
+        return save(room);
+    }
+
+    @Transactional
+    public Room addRoomToHotel(Room room, Hotel hotel) {
+        room.setHotel(hotel);
+        hotel.addRoom(room);
+        return save(room);
     }
 }

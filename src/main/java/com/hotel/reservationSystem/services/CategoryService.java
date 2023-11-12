@@ -37,17 +37,6 @@ public class CategoryService {
 //    }
 
     @Transactional
-    public void addRoom(Category category, Room room) {
-        category.addRoom(room);
-        save(category);
-    }
-
-    @Transactional
-    public void removeRoom(Category category, Room room) {
-        category.removeRoom(room);
-    }
-
-    @Transactional
     public void update(Integer id, Category category) {
         category.setId(id);
         categoryRepository.save(category);
