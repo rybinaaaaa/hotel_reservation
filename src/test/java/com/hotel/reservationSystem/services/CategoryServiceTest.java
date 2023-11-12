@@ -17,8 +17,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional
 @TestPropertySource(locations = "classpath:application-test.properties")
 public class CategoryServiceTest {
-    private CategoryService service;
-    private RoomService roomService;
+    private final CategoryService service;
+    private final RoomService roomService;
 
     @Autowired
     public CategoryServiceTest(CategoryService service, RoomService roomService) {
@@ -30,12 +30,11 @@ public class CategoryServiceTest {
     @Test
     public void addRoomToCategoryAddsRoomToTargetCategory() {
         final Room room = Generator.generateRoom();
-        final Category category = new Category();
-        category.setName("test");
-        category.setId(1);
-        service.save(category);
-        roomService.save(room);
         room.setId(2);
+        roomService.save(room);
+
+        Category category = Generator.generateCategory();
+        service.save(category);
         service.addRoomToCatagory(room, category);
 
         final Category result = service.find(category.getId());
@@ -45,12 +44,11 @@ public class CategoryServiceTest {
     @Test
     public void addRoomToCategoryAddsCategoryToTargetRoom() {
         final Room room = Generator.generateRoom();
-        final Category category = new Category();
-        category.setName("test");
-        category.setId(1);
-        service.save(category);
-        roomService.save(room);
         room.setId(2);
+        roomService.save(room);
+
+        Category category = Generator.generateCategory();
+        service.save(category);
         service.addRoomToCatagory(room, category);
 
         final Category result = service.find(category.getId());
@@ -63,10 +61,7 @@ public class CategoryServiceTest {
         room.setId(2);
         roomService.save(room);
 
-
-        final Category category = new Category();
-        category.setName("test");
-        category.setId(1);
+        Category category = Generator.generateCategory();
         service.save(category);
         service.deleteRoomFromCategory(room, category);
 
@@ -80,9 +75,7 @@ public class CategoryServiceTest {
         room.setId(2);
         roomService.save(room);
 
-        final Category category = new Category();
-        category.setName("test");
-        category.setId(1);
+        Category category = Generator.generateCategory();
         service.save(category);
         service.deleteRoomFromCategory(room, category);
 

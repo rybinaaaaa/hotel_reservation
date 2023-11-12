@@ -1,5 +1,6 @@
 package environment;
 
+import com.hotel.reservationSystem.models.Category;
 import com.hotel.reservationSystem.models.Role;
 import com.hotel.reservationSystem.models.Room;
 import com.hotel.reservationSystem.models.User;
@@ -34,12 +35,18 @@ public class Generator {
         return room;
 
     }
-
     public static User generateUser() {
         User user = new User();
         user.setId(1);
         user.setRole(Role.USER);
         return user;
+    }
+
+    public static Category generateCategory(){
+        Category category = new Category();
+        category.setName("test");
+        category.setId(1);
+        return  category;
     }
 
 }

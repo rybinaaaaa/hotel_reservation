@@ -48,12 +48,10 @@ public class PaymentServiceTest {
 
         paymentService.addPaymentToReservation(payment, reservation);
         Payment result = paymentService.find(1);
-        //payment was added
         assertEquals(result,result.getReservation().getPayment());
-        //delete payment
         paymentService.deletePaymentFromReservation(payment);
 
-        result = paymentService.find(1);
+        paymentService.find(1);
         assertNull(reservation.getPayment());
     }
 
