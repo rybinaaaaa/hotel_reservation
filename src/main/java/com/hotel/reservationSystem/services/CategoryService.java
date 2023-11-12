@@ -43,7 +43,7 @@ public class CategoryService {
     }
 
     @Transactional
-    public Category deleteRoomFromCatagory(Room room, Category category) {
+    public Category deleteRoomFromCategory(Room room, Category category) {
         category.removeRoom(room);
         room.removeCategory(category);
         return save(category);
