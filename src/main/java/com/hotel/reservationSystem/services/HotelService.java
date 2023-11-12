@@ -35,18 +35,6 @@ public class HotelService {
         hotelRepository.deleteById(id);
     }
 
-    @Transactional
-    public void addRoom(Hotel hotel, Room room) {
-        hotel.addRoom(room);
-        save(hotel);
-    }
-
-    @Transactional
-    public void deleteRoomById(Hotel hotel, Integer id) {
-        hotel.deleteRoomById(id);
-        save(hotel);
-    }
-
     public Hotel find(Integer id) {
         return hotelRepository.findById(id).orElse(null);
     }
