@@ -27,6 +27,7 @@ public class HotelService {
     @Transactional
     public void update(Integer id, Hotel hotel) {
         hotel.setId(id);
+        hotelRepository.save(hotel);
     }
 
     @Transactional
@@ -37,11 +38,13 @@ public class HotelService {
     @Transactional
     public void addRoom(Hotel hotel, Room room) {
         hotel.addRoom(room);
+        save(hotel);
     }
 
     @Transactional
     public void deleteRoomById(Hotel hotel, Integer id) {
         hotel.deleteRoomById(id);
+        save(hotel);
     }
 
     public Hotel find(Integer id) {

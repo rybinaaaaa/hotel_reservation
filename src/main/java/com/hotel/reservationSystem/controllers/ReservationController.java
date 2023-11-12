@@ -84,9 +84,7 @@ public class ReservationController {
     @GetMapping("/user/{id}")
     public List<Reservation> showByUser(@PathVariable("id") Integer id) {
         User user = userService.find(id);
-        if (user == null) {
-            return null;
-        }
+        if (user == null) return null;
         return reservationService.findAllByUser(user);
     }
 }
