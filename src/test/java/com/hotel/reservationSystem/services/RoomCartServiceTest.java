@@ -64,7 +64,6 @@ public class RoomCartServiceTest {
 
         roomCartService.setReservation(roomCart, reservation);
         RoomCart result = roomCartService.find(roomCart.getId());
-        //delete reservation
         roomCartService.deleteReservation(savedRoomCart);
         assertNull(result.getReservation());
     }
