@@ -57,4 +57,21 @@ public class ReservationService {
     public void enrichReservation(Reservation reservation) {
         reservation.setCreatedAt(new Date());
     }
+
+    @Transactional
+    public Reservation addReservationToUser(User user, Reservation reservation) {
+        reservation.setUser(user);
+        user.addReservation(reservation);
+        return save(reservation);
+    }
+
+    @Transactional
+    public Reservation deleteReservationFromUser(Reservation reservation) {
+        User user = reservation.getUser();
+        if (user != null) {
+            reservation.setUser(null);
+            user.removeReservationById(reservation.getId());
+        }
+        return save(reservation);
+    }
 }

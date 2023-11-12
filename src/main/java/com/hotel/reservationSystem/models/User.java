@@ -53,9 +53,9 @@ public class User extends BaseEntity {
         }
     }
 
-    public void removeReservation(Reservation reservation) {
+    public void removeReservationById(Integer id) {
         if (reservations == null) return;
-        reservations.removeIf(r -> Objects.equals(r.getId(), reservation.getId()));
+        reservations.removeIf(r -> Objects.equals(r.getId(), id));
     }
 
     public Integer getPhone() {

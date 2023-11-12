@@ -55,17 +55,6 @@ public class UserService {
     }
 
     @Transactional
-    public void addReservation(User user, Reservation reservation) {
-        user.addReservation(reservation);
-        reservation.setUser(user); // 2 side for hibernate cash
-    }
-
-    @Transactional
-    public void removeReservation(User user, Reservation reservation) {
-        user.removeReservation(reservation);
-    }
-
-    @Transactional
     public User update(Integer id, User user) {
         user.setId(id);
         userRepository.save(user);
