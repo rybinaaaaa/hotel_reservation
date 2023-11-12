@@ -29,7 +29,11 @@ public class Room extends BaseEntity {
     @Column(name = "room_type")
     private RoomType roomType;
 
-    @ManyToMany(mappedBy = "rooms")
+    @ManyToMany
+    @JoinTable(name = "category_room",
+            inverseJoinColumns = @JoinColumn(name = "category_id"),
+            joinColumns = @JoinColumn(name = "room_id")
+    )
     private List<Category> categories;
 
     @OneToMany(mappedBy = "room")
