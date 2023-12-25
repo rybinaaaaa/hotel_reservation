@@ -23,3 +23,7 @@ The following guides illustrate how to use some features concretely:
 * [Authenticating a User with LDAP](https://spring.io/guides/gs/authenticating-ldap/)
 * [Validation](https://spring.io/guides/gs/validating-form-input/)
 
+### START APP 
+
+* ./mvnw clean package -Dmaven.test.skip=true
+* docker-compose up (--build)
