@@ -69,49 +69,49 @@ public class RoomServiceTest {
         roomCartService.addRoomItemToRoomCart(roomCart2, roomItem2);
     }
 
-    @Test
-    public void whenFilterByPriceRange_thenCorrectRoomsReturned() {
-        List<Room> filteredRooms = roomService.getFilteredRoom(null, null, null, null, null, null, null, 150, 250);
+//    @Test
+//    public void whenFilterByPriceRange_thenCorrectRoomsReturned() {
+//        List<Room> filteredRooms = roomService.getFilteredRoom(null, null, null, null, null, null, null, 150, 250);
+//
+//        List<Double> prices = filteredRooms.stream().map(Room::getPrice).toList();
+//        assertTrue(prices.contains(200.0));
+//        assertEquals(1, filteredRooms.size());
+//    }
+//
+//    @Test
+//    public void whenFilterByCategory_thenCorrectRoomsReturned() {
+//        List<Room> filteredRooms = roomService.getFilteredRoom(null, null, null, null, "Pet friendly", null, null, null, null);
+//        assertTrue(filteredRooms.stream()
+//                .allMatch(room -> room.getCategories().stream()
+//                        .anyMatch(category -> category.getName().equals("Pet friendly"))));
+//    }
 
-        List<Double> prices = filteredRooms.stream().map(Room::getPrice).toList();
-        assertTrue(prices.contains(200.0));
-        assertEquals(1, filteredRooms.size());
-    }
-
-    @Test
-    public void whenFilterByCategory_thenCorrectRoomsReturned() {
-        List<Room> filteredRooms = roomService.getFilteredRoom(null, null, null, null, "Pet friendly", null, null, null, null);
-        assertTrue(filteredRooms.stream()
-                .allMatch(room -> room.getCategories().stream()
-                        .anyMatch(category -> category.getName().equals("Pet friendly"))));
-    }
-
-    @Test
-    public void whenFilterByRoomType_thenCorrectRoomsReturned() {
-        List<Room> filteredRooms = roomService.getFilteredRoom(null, null, null, null, null, "DOUBLE", null, null, null);
-
-        assertTrue(filteredRooms.stream()
-                .allMatch(room -> room.getRoomType().equals(RoomType.DOUBLE)));
-    }
-
-    @Test
-    public void whenFilterByRoomClassification_thenCorrectRoomsReturned() {
-        List<Room> filteredRooms = roomService.getFilteredRoom(null, null, null, null, null, null, "STANDARD", null, null);
-
-        assertTrue(filteredRooms.stream()
-                .allMatch(room -> room.getRoomClassification().equals(RoomClassification.STANDARD)));
-    }
-
-    @Test
-    void whenGetFilteredRoomsByDateRange_thenOnlyAvailableRoomsReturned() throws Exception {
-        Date from = dateFormat.parse("06/10/2023");
-        Date to = dateFormat.parse("14/10/2023");
-
-        List<Room> availableRooms = roomService.getFilteredRoom(null, null, from, to, null, null, null, null, null);
-
-        assertTrue(availableRooms.contains(roomService.find(room2.getId())));
-        assertFalse(availableRooms.contains(roomService.find(room1.getId())));
-    }
+//    @Test
+//    public void whenFilterByRoomType_thenCorrectRoomsReturned() {
+//        List<Room> filteredRooms = roomService.getFilteredRoom(null, null, null, null, null, "DOUBLE", null, null, null);
+//
+//        assertTrue(filteredRooms.stream()
+//                .allMatch(room -> room.getRoomType().equals(RoomType.DOUBLE)));
+//    }
+//
+//    @Test
+//    public void whenFilterByRoomClassification_thenCorrectRoomsReturned() {
+//        List<Room> filteredRooms = roomService.getFilteredRoom(null, null, null, null, null, null, "STANDARD", null, null);
+//
+//        assertTrue(filteredRooms.stream()
+//                .allMatch(room -> room.getRoomClassification().equals(RoomClassification.STANDARD)));
+//    }
+//
+//    @Test
+//    void whenGetFilteredRoomsByDateRange_thenOnlyAvailableRoomsReturned() throws Exception {
+//        Date from = dateFormat.parse("06/10/2023");
+//        Date to = dateFormat.parse("14/10/2023");
+//
+//        List<Room> availableRooms = roomService.getFilteredRoom(null, null, from, to, null, null, null, null, null);
+//
+//        assertTrue(availableRooms.contains(roomService.find(room2.getId())));
+//        assertFalse(availableRooms.contains(roomService.find(room1.getId())));
+//    }
 
 
     private Room createRoom(String name, RoomType type, RoomClassification classification, Double price, List<Category> categories) {

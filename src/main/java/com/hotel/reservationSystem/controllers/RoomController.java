@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/rooms")
@@ -30,17 +31,26 @@ public class RoomController {
 
     @GetMapping("/filtered")
     public List<Room> getFilteredRooms(
-            @RequestParam(name = "page", required = false) Integer page,
-            @RequestParam(name = "perPage", required = false) Integer perPage,
-            @RequestParam(name = "from", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date from,
-            @RequestParam(name = "to", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date to,
-            @RequestParam(name = "category", required = false) String category,
-            @RequestParam(name = "roomType", required = false) String roomType,
-            @RequestParam(name = "roomClassification", required = false) String roomClassification,
-            @RequestParam(name = "priceFrom", required = false) Integer priceFrom,
-            @RequestParam(name = "priceTo", required = false) Integer priceTo) {
+            Optional<Integer> page,
+            Optional<Integer> perPage,
+            @DateTimeFormat(pattern = "yyyy-MM-dd") Optional<Date> from,
+            @DateTimeFormat(pattern = "yyyy-MM-dd") Optional<Date> to,
+            Optional<String> category,
+            Optional<String> roomType,
+            Optional<String> roomClassification,
+            Optional<Integer> priceFrom,
+            Optional<Integer> priceTo) {
 
-        return roomService.getFilteredRoom(page, perPage, from, to, category, roomType, roomClassification, priceFrom, priceTo);
+        return roomService.getFilteredRoom(
+                page,
+                perPage,
+                from,
+                to,
+                category,
+                roomType,
+                roomClassification,
+                priceFrom,
+                priceTo);
     }
 
     @GetMapping("/{id}")
