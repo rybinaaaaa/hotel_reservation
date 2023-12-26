@@ -38,8 +38,8 @@ public class RoomController {
             Optional<String> category,
             Optional<String> roomType,
             Optional<String> roomClassification,
-            Optional<Integer> priceFrom,
-            Optional<Integer> priceTo) {
+            Optional<Double> priceFrom,
+            Optional<Double> priceTo) {
 
         return roomService.getFilteredRoom(
                 page,

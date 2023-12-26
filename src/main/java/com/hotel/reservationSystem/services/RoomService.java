@@ -5,10 +5,7 @@ import com.hotel.reservationSystem.repositories.RoomRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -102,42 +99,47 @@ public class RoomService {
                                       Optional<String> category,
                                       Optional<String> roomType,
                                       Optional<String> roomClassification,
-                                      Optional<Integer> priceFrom,
-                                      Optional<Integer> priceTo) {
-//        List<Room> rooms = page != null && perPage != null ? roomRepository.findAll(PageRequest.of(page, perPage)).getContent() : roomRepository.findAll();
-//        if (Objects.nonNull(from) && Objects.nonNull(to)) {
-//            rooms = getFreeRooms(from, to, rooms);
-//        }
-//        rooms = rooms.stream().filter(r -> category == null  || r.getCategories().stream().map(Category::getName).toList().contains(category)).collect(Collectors.toList());
-//        rooms = rooms.stream().filter(r -> roomType == null || r.getRoomType().name().equalsIgnoreCase(roomType)).collect(Collectors.toList());
-//        rooms = rooms.stream().filter(r -> roomClassification == null || r.getRoomClassification().name().equalsIgnoreCase(roomClassification)).collect(Collectors.toList());
-//        rooms = rooms.stream().filter(r -> priceFrom == null || r.getPrice() >= priceFrom).collect(Collectors.toList());
-//        rooms = rooms.stream().filter(r -> priceTo == null || r.getPrice() <= priceTo).collect(Collectors.toList());
-//
-//        return rooms;
-
+                                      Optional<Double> priceFrom,
+                                      Optional<Double> priceTo) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Room> cq = cb.createQuery(Room.class);
-        Root<Room> room = cq.from(Room.class);
+        Root<Room> roomRoot = cq.from(Room.class);
 
         List<Predicate> predicates = new ArrayList<>();
 
+        if (to.isPresent() && from.isPresent()) {
+            Join<Room, RoomItem> roomItemJoin = roomRoot.join(Room_.roomItems);
+            Join<RoomItem, RoomCart> roomCartJoin = roomItemJoin.join(RoomItem_.roomCarts, JoinType.LEFT);
 
-//      TODO
+            Predicate startsBeforeOrDuringTo = cb.lessThanOrEqualTo(roomCartJoin.<Date>get(RoomCart_.reservedFrom), to.get());
+            Predicate endsAfterOrDuringFrom = cb.greaterThanOrEqualTo(roomCartJoin.<Date>get(RoomCart_.reservedTo), from.get());
 
-        category.ifPresent(cat -> predicates.add(cb.equal(room.get("category"), cat)));
-        roomType.ifPresent(type -> predicates.add(cb.equal(room.get("roomType"), type)));
-        roomClassification.ifPresent(classification -> predicates.add(cb.equal(room.get("roomClassification"), classification)));
-        priceFrom.ifPresent(price -> predicates.add(cb.greaterThanOrEqualTo(room.<Integer>get("price"), price)));
-        priceTo.ifPresent(price -> predicates.add(cb.lessThanOrEqualTo(room.<Integer>get("price"), price)));
+            Predicate overlaps = cb.and(startsBeforeOrDuringTo, endsAfterOrDuringFrom);
+            Predicate noBookingOrNotOverlapping = cb.or(cb.isNull(roomCartJoin.get(RoomCart_.id)), cb.not(overlaps));
+//            Predicate noBookingOrNotOverlapping = cb.or(cb.isNull(roomCartJoin.get("id")), cb.not(overlaps));
 
-        cq.where(predicates.toArray(new Predicate[0]));
+            predicates.add(noBookingOrNotOverlapping);
+        }
 
-        // Пагинация
-        Pageable pageable = PageRequest.of(page.orElse(0), perPage.orElse(10));
+        // Фильтрация по категории
+        category.ifPresent(cat -> {
+            Join<Room, Category> categoryJoin = roomRoot.join(Room_.categories);
+            predicates.add(cb.equal(categoryJoin.get(Category_.name), cat));
+        });
+
+        // Остальные фильтры
+        roomType.ifPresent(type -> predicates.add(cb.equal(roomRoot.get(Room_.roomType), RoomType.valueOf(type))));
+        roomClassification.ifPresent(classification -> predicates.add(cb.equal(roomRoot.get(Room_.roomClassification), RoomClassification.valueOf(classification))));
+        priceFrom.ifPresent(price -> predicates.add(cb.greaterThanOrEqualTo(roomRoot.get(Room_.price), price)));
+        priceTo.ifPresent(price -> predicates.add(cb.lessThanOrEqualTo(roomRoot.get(Room_.price), price)));
+
+        cq.where(predicates.toArray(new Predicate[0])).distinct(true);
+
         TypedQuery<Room> query = em.createQuery(cq);
-        query.setFirstResult((int) pageable.getOffset());
-        query.setMaxResults(pageable.getPageSize());
+        if (page.isPresent() && perPage.isPresent()) {
+            query.setFirstResult(page.get() * perPage.get());
+            query.setMaxResults(perPage.get());
+        }
 
         return query.getResultList();
     }
