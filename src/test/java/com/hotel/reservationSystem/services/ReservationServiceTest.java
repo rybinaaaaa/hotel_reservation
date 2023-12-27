@@ -52,8 +52,7 @@ public class ReservationServiceTest {
 //    }
 
     @Autowired
-    public ReservationServiceTest(PaymentService paymentService, UserService userService, RoomService roomService, CategoryService categoryService, RoomItemService roomItemService, RoomCartService roomCartService, ReservationService reservationService) {
-        this.paymentService = paymentService;
+    public ReservationServiceTest( UserService userService, RoomService roomService, CategoryService categoryService, RoomItemService roomItemService, RoomCartService roomCartService, ReservationService reservationService) {
         this.roomService = roomService;
         this.categoryService = categoryService;
         this.roomItemService = roomItemService;
@@ -176,31 +175,47 @@ public class ReservationServiceTest {
         roomCartService.save(roomCart1);
 
         User user = Generator.generateUser();
-        user.setPhone("38004393834");
+        user.setPhone(123);
         userService.save(user);
 
-        Reservation reservation = new Reservation();
-        reservation.setUser(user);
-        reservation.setCreatedAt(new Date(2023, 12,12));
-        reservation.addRoomCart(roomCart1);
-        reservationService.save(reservation);
+        Reservation reservation1 = new Reservation();
+        reservation1.setUser(user);
+        reservation1.setCreatedAt(new Date(2023, 11,12));
+        reservation1.addRoomCart(roomCart1);
+        reservationService.save(reservation1);
 
-        roomCart1.setReservation(reservation);
+
+        roomCart1.setReservation(reservation1);
         roomCartService.update(roomCart1.getId(),roomCart1);
-        return  reservation;
+
+        return reservation1;
     }
 
     @Test
     public void findReservationByDateAndRoomNumberTest(){
         Reservation expected = setUpCart();
-        Reservation result = reservationService.findReservationByDateAndRoomNumber(new Date(2023, Calendar.AUGUST, 10),new Date(2023, Calendar.DECEMBER, 10), 1 );
+        Reservation result = reservationService.findReservationByDateAndRoomNumber(new Date(2023, Calendar.AUGUST, 10), new Date(2023, Calendar.NOVEMBER, 10), 1 );
         assertEquals(expected.getId(), result.getId());
     }
 
     @Test
     public void findReservationsByUserPhoneTest(){
         Reservation expected = setUpCart();
-        List<Reservation> result = reservationService.findReservationsByUserPhone("38004393834");
+        List<Reservation> result = reservationService.findReservationsByUserPhone(123);
+        assertEquals(expected.getId(), result.get(0).getId());
+    }
+
+    @Test
+    public void findReservationsByUserNameTest(){
+        Reservation expected = setUpCart();
+        List<Reservation> result = reservationService.findReservationsByUserName("Test", "Test");
+        assertEquals(expected.getId(), result.get(0).getId());
+    }
+
+    @Test
+    public void findReservationsByRoomNumberTest(){
+        Reservation expected = setUpCart();
+        List<Reservation> result = reservationService.findReservationsByRoomNumber(1);
         assertEquals(expected.getId(), result.get(0).getId());
     }
 }

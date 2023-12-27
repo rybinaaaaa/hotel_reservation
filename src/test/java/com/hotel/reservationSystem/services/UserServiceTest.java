@@ -89,11 +89,11 @@ public class UserServiceTest {
     @Test
     public void updateUpdatesUser() {
         Integer userId = 1;
-        User existingUser = new User("123", "John", "Doe", "password", "john.doe@example.com", USER);
+        User existingUser = new User(123, "John", "Doe", "password", "john.doe@example.com", USER);
         existingUser.setId(userId);
         userService.save(existingUser);
 
-        User updatedUser = new User("456", "Updated", "User", "updatedPassword", "updated@example.com", ADMIN);
+        User updatedUser = new User(456, "Updated", "User", "updatedPassword", "updated@example.com", ADMIN);
 
         User result = userService.update(userId, updatedUser);
         assertEquals(userId, result.getId());

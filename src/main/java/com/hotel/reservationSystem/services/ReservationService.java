@@ -87,7 +87,7 @@ public class ReservationService {
         return result.isEmpty() ? null : result.get(0);
     }
 
-    public List<Reservation> findReservationsByUserPhone(String phone) {
+    public List<Reservation> findReservationsByUserPhone(Integer phone) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Reservation> query = cb.createQuery(Reservation.class);
         Root<Reservation> reservationRoot = query.from(Reservation.class);

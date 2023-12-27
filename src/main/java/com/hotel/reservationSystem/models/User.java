@@ -1,6 +1,7 @@
 package com.hotel.reservationSystem.models;
 
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.Objects;
 public class User extends BaseEntity {
 
     @Column
-    private String phone;
+    private Integer phone;
 
     @Column(name = "first_name")
     private String firstName;
@@ -35,7 +36,7 @@ public class User extends BaseEntity {
 
     }
 
-    public User(String phone, String firstName, String lastName, String password, String email, Role role) {
+    public User(Integer phone, String firstName, String lastName, String password, String email, Role role) {
         this.phone = phone;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -58,11 +59,11 @@ public class User extends BaseEntity {
         reservations.removeIf(r -> Objects.equals(r.getId(), id));
     }
 
-    public String getPhone() {
+    public Integer getPhone() {
         return phone;
     }
 
-    public void setPhone(String phone) {
+    public void setPhone(Integer phone) {
         this.phone = phone;
     }
 
