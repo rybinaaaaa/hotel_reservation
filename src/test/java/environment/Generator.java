@@ -1,12 +1,17 @@
 package environment;
 
-import com.hotel.reservationSystem.models.Category;
-import com.hotel.reservationSystem.models.Role;
-import com.hotel.reservationSystem.models.Room;
-import com.hotel.reservationSystem.models.User;
+import com.hotel.reservationSystem.models.*;
+import com.hotel.reservationSystem.services.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
+@Service
+@Transactional(readOnly = true)
 public class Generator {
     private static final Random RAND = new Random();
 
@@ -17,6 +22,7 @@ public class Generator {
     public static int randomInt(int max) {
         return RAND.nextInt(max);
     }
+
 
     public static int randomInt(int min, int max) {
         assert min >= 0;
@@ -48,5 +54,6 @@ public class Generator {
         category.setId(1);
         return  category;
     }
+
 
 }

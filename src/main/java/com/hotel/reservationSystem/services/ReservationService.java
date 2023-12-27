@@ -1,15 +1,17 @@
 package com.hotel.reservationSystem.services;
 
 
-import com.hotel.reservationSystem.models.Reservation;
-import com.hotel.reservationSystem.models.RoomCart;
-import com.hotel.reservationSystem.models.User;
+import com.hotel.reservationSystem.models.*;
 import com.hotel.reservationSystem.repositories.ReservationRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +20,9 @@ import java.util.List;
 public class ReservationService {
 
     private final ReservationRepository reservationRepository;
+
+    @PersistenceContext
+    EntityManager em;
 
     @Autowired
     public ReservationService(ReservationRepository reservationRepository) {
@@ -57,6 +62,76 @@ public class ReservationService {
     public void enrichReservation(Reservation reservation) {
         reservation.setCreatedAt(new Date());
     }
+
+    public Reservation findReservationByDateAndRoomNumber(Date from, Date to, Integer roomNumber) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Reservation> query = cb.createQuery(Reservation.class);
+        Root<Reservation> reservationRoot = query.from(Reservation.class);
+
+        Join<Reservation, RoomCart> roomCartJoin = reservationRoot.join(Reservation_.roomCarts);
+        Join<RoomCart, RoomItem> roomItemJoin = roomCartJoin.join(RoomCart_.roomItem);
+
+        Predicate datePredicate = cb.and(
+                cb.lessThanOrEqualTo(roomCartJoin.get(RoomCart_.reservedTo), to),
+                cb.greaterThanOrEqualTo(roomCartJoin.get(RoomCart_.reservedFrom), from)
+        );
+
+        Predicate roomNumberPredicate = cb.equal(roomItemJoin.get(RoomItem_.roomNumber), roomNumber);
+
+        query.select(reservationRoot)
+                .distinct(true)
+                .where(cb.and(datePredicate, roomNumberPredicate));
+
+        List<Reservation> result = em.createQuery(query).getResultList();
+
+        return result.isEmpty() ? null : result.get(0);
+    }
+
+    public List<Reservation> findReservationsByUserPhone(String phone) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Reservation> query = cb.createQuery(Reservation.class);
+        Root<Reservation> reservationRoot = query.from(Reservation.class);
+        Join<Reservation, User> userJoin = reservationRoot.join(Reservation_.user);
+
+        Predicate phonePredicate = cb.equal(userJoin.get(User_.phone), phone);
+
+        query.select(reservationRoot)
+                .where(phonePredicate);
+
+        return em.createQuery(query).getResultList();
+    }
+
+    public List<Reservation> findReservationsByUserName(String fName, String lName) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Reservation> query = cb.createQuery(Reservation.class);
+        Root<Reservation> reservationRoot = query.from(Reservation.class);
+        Join<Reservation, User> userJoin = reservationRoot.join(Reservation_.user);
+
+        Predicate firstNamePredicate = cb.equal(userJoin.get(User_.firstName), fName);
+        Predicate lastNamePredicate = cb.equal(userJoin.get(User_.lastName), lName);
+
+        query.select(reservationRoot)
+                .where(cb.and(firstNamePredicate, lastNamePredicate));
+
+        return em.createQuery(query).getResultList();
+    }
+
+    public List<Reservation> findReservationsByRoomNumber(Integer roomNum) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Reservation> query = cb.createQuery(Reservation.class);
+        Root<Reservation> reservationRoot = query.from(Reservation.class);
+        Join<Reservation, RoomCart> roomCartJoin = reservationRoot.join(Reservation_.roomCarts);
+        Join<RoomCart, RoomItem> roomItemJoin = roomCartJoin.join(RoomCart_.roomItem);
+
+        Predicate roomNumberPredicate = cb.equal(roomItemJoin.get(RoomItem_.roomNumber), roomNum);
+
+        query.select(reservationRoot)
+                .distinct(true)
+                .where(roomNumberPredicate);
+
+        return em.createQuery(query).getResultList();
+    }
+
 
     @Transactional
     public Reservation addReservationToUser(User user, Reservation reservation) {

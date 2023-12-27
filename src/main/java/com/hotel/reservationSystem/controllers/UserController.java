@@ -29,7 +29,7 @@ public class UserController {
         return userService.find(id);
     }
 
-    @PostMapping()
+    @PostMapping("/add")
     public ResponseEntity<User> createUser(@RequestBody User user) {
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

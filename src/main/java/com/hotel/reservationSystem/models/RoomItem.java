@@ -76,4 +76,6 @@ public class RoomItem extends BaseEntity {
                !(r.getReservedTo().before(from) || r.getReservedFrom().after(to))
         );
     }
+
+
 }
