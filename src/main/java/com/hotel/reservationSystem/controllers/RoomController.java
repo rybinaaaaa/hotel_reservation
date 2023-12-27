@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -33,8 +34,8 @@ public class RoomController {
     public List<Room> getFilteredRooms(
             Optional<Integer> page,
             Optional<Integer> perPage,
-            @DateTimeFormat(pattern = "yyyy-MM-dd") Optional<Date> from,
-            @DateTimeFormat(pattern = "yyyy-MM-dd") Optional<Date> to,
+            @DateTimeFormat(pattern = "yyyy-MM-dd") Optional<LocalDate> from,
+            @DateTimeFormat(pattern = "yyyy-MM-dd") Optional<LocalDate> to,
             Optional<String> category,
             Optional<String> roomType,
             Optional<String> roomClassification,

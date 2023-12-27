@@ -4,7 +4,7 @@ import jakarta.annotation.Generated;
 import jakarta.persistence.metamodel.EntityType;
 import jakarta.persistence.metamodel.SingularAttribute;
 import jakarta.persistence.metamodel.StaticMetamodel;
-import java.util.Date;
+import java.time.LocalDate;
 
 @StaticMetamodel(RoomCart.class)
 @Generated("org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor")
@@ -14,12 +14,12 @@ public abstract class RoomCart_ extends com.hotel.reservationSystem.models.BaseE
 	/**
 	 * @see com.hotel.reservationSystem.models.RoomCart#reservedTo
 	 **/
-	public static volatile SingularAttribute<RoomCart, Date> reservedTo;
+	public static volatile SingularAttribute<RoomCart, LocalDate> reservedTo;
 	
 	/**
 	 * @see com.hotel.reservationSystem.models.RoomCart#reservedFrom
 	 **/
-	public static volatile SingularAttribute<RoomCart, Date> reservedFrom;
+	public static volatile SingularAttribute<RoomCart, LocalDate> reservedFrom;
 	
 	/**
 	 * @see com.hotel.reservationSystem.models.RoomCart#roomItem

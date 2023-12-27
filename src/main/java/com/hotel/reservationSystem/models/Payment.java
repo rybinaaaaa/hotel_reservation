@@ -2,6 +2,8 @@ package com.hotel.reservationSystem.models;
 
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -15,7 +17,7 @@ public class Payment extends BaseEntity {
 
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "dd/MM/yyyy")
-    private Date date;
+    private LocalDate date;
 
     @OneToOne
     @JoinColumn(name = "reservation_id", referencedColumnName = "id")
@@ -25,7 +27,7 @@ public class Payment extends BaseEntity {
 
     }
 
-    public Payment(Double amount, Integer billNumber, Date date) {
+    public Payment(Double amount, Integer billNumber, LocalDate date) {
         this.amount = amount;
         this.billNumber = billNumber;
         this.date = date;
@@ -47,11 +49,11 @@ public class Payment extends BaseEntity {
         this.billNumber = billNumber;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

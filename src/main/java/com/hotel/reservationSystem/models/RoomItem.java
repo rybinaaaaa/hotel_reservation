@@ -2,6 +2,7 @@ package com.hotel.reservationSystem.models;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -70,10 +71,10 @@ public class RoomItem extends BaseEntity {
         this.roomCarts.removeIf(r -> Objects.equals(r.getId(), id));
     }
 
-    public Boolean isReserved(Date from, Date to) {
+    public Boolean isReserved(LocalDate from, LocalDate to) {
         if (this.roomCarts == null) return false;
         return this.roomCarts.stream().anyMatch(r ->
-               !(r.getReservedTo().before(from) || r.getReservedFrom().after(to))
+               !(r.getReservedTo().isBefore(from) || r.getReservedFrom().isAfter(to))
         );
     }
 

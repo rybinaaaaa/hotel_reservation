@@ -3,6 +3,7 @@ package com.hotel.reservationSystem.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -149,7 +150,7 @@ public class Room extends BaseEntity {
         this.roomItems.removeIf(r -> Objects.equals(r.getId(), id));
     }
 
-    public List<RoomItem> getFreeRoomItems(Date from, Date to) {
+    public List<RoomItem> getFreeRoomItems(LocalDate from, LocalDate to) {
         if (this.roomItems == null) return Collections.emptyList();
         return this.roomItems.stream().filter(roomItem -> !roomItem.isReserved(from, to)).collect(Collectors.toList());
     }

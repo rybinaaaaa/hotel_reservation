@@ -45,7 +45,6 @@ public class Generator {
         User user = new User();
         user.setFirstName("Test");
         user.setLastName("Test");
-        user.setId(1);
         user.setRole(Role.USER);
         return user;
     }

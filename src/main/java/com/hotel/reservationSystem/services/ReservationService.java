@@ -60,10 +60,10 @@ public class ReservationService {
     }
 
     public void enrichReservation(Reservation reservation) {
-        reservation.setCreatedAt(new Date());
+        reservation.setCreatedAt(LocalDate.now());
     }
 
-    public Reservation findReservationByDateAndRoomNumber(Date from, Date to, Integer roomNumber) {
+    public Reservation findReservationByDateAndRoomNumber(LocalDate from, LocalDate to, Integer roomNumber) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Reservation> query = cb.createQuery(Reservation.class);
         Root<Reservation> reservationRoot = query.from(Reservation.class);

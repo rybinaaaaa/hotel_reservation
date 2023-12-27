@@ -4,7 +4,7 @@ import jakarta.annotation.Generated;
 import jakarta.persistence.metamodel.EntityType;
 import jakarta.persistence.metamodel.SingularAttribute;
 import jakarta.persistence.metamodel.StaticMetamodel;
-import java.util.Date;
+import java.time.LocalDate;
 
 @StaticMetamodel(Payment.class)
 @Generated("org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor")
@@ -14,7 +14,7 @@ public abstract class Payment_ extends com.hotel.reservationSystem.models.BaseEn
 	/**
 	 * @see com.hotel.reservationSystem.models.Payment#date
 	 **/
-	public static volatile SingularAttribute<Payment, Date> date;
+	public static volatile SingularAttribute<Payment, LocalDate> date;
 	
 	/**
 	 * @see com.hotel.reservationSystem.models.Payment#amount

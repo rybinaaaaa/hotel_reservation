@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -170,7 +171,7 @@ public class ReservationServiceTest {
         roomItemService.addRoomItemToRoom(room1, roomItem1);
         roomItemService.save(roomItem1);
 
-        RoomCart roomCart1 = new RoomCart(new Date(2023, Calendar.AUGUST, 10), new Date(2023, Calendar.NOVEMBER, 10));
+        RoomCart roomCart1 = new RoomCart(LocalDate.of(2023, Calendar.AUGUST, 10), LocalDate.of(2023, Calendar.NOVEMBER, 10));
         roomCartService.addRoomItemToRoomCart(roomCart1, roomItem1);
         roomCartService.save(roomCart1);
 
@@ -180,7 +181,7 @@ public class ReservationServiceTest {
 
         Reservation reservation1 = new Reservation();
         reservation1.setUser(user);
-        reservation1.setCreatedAt(new Date(2023, 11,12));
+        reservation1.setCreatedAt(LocalDate.of(2023, 11,12));
         reservation1.addRoomCart(roomCart1);
         reservationService.save(reservation1);
 
@@ -194,7 +195,7 @@ public class ReservationServiceTest {
     @Test
     public void findReservationByDateAndRoomNumberTest(){
         Reservation expected = setUpCart();
-        Reservation result = reservationService.findReservationByDateAndRoomNumber(new Date(2023, Calendar.AUGUST, 10), new Date(2023, Calendar.NOVEMBER, 10), 1 );
+        Reservation result = reservationService.findReservationByDateAndRoomNumber(LocalDate.of(2023, Calendar.AUGUST, 10), LocalDate.of(2023, Calendar.NOVEMBER, 10), 1 );
         assertEquals(expected.getId(), result.getId());
     }
 

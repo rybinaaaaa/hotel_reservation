@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -59,13 +60,13 @@ public class RoomServiceTest {
         RoomItem roomItem2 = new RoomItem();
         roomItemService.addRoomItemToRoom(room2, roomItem2);
 
-        Date fromReserved1 = dateFormat.parse("07/10/2023");
-        Date toReserved1 = dateFormat.parse("10/10/2023");
+        LocalDate fromReserved1 = LocalDate.parse("07/10/2023");
+        LocalDate toReserved1 = LocalDate.parse("10/10/2023");
         RoomCart roomCart1 = new RoomCart(fromReserved1, toReserved1);
         roomCartService.addRoomItemToRoomCart(roomCart1, roomItem1);
 
-        Date fromReserved2 = dateFormat.parse("15/10/2023");
-        Date toReserved2 = dateFormat.parse("20/10/2023");
+        LocalDate fromReserved2 = LocalDate.parse("15/10/2023");
+        LocalDate toReserved2 = LocalDate.parse("20/10/2023");
         RoomCart roomCart2 = new RoomCart(fromReserved2, toReserved2);
         roomCartService.addRoomItemToRoomCart(roomCart2, roomItem2);
     }
@@ -125,8 +126,8 @@ public class RoomServiceTest {
 
     @Test
     void whenGetFilteredRoomsByDateRange_thenOnlyAvailableRoomsReturned() throws Exception {
-        Date from = dateFormat.parse("06/10/2023");
-        Date to = dateFormat.parse("14/10/2023");
+        LocalDate from = LocalDate.parse("2023-10-06");
+        LocalDate to = LocalDate.parse("2023-10-14");
 
         List<Room> availableRooms = roomService.getFilteredRoom(Optional.empty(), Optional.empty(), Optional.of(from), Optional.of(to), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
 

@@ -5,7 +5,7 @@ import jakarta.persistence.metamodel.EntityType;
 import jakarta.persistence.metamodel.ListAttribute;
 import jakarta.persistence.metamodel.SingularAttribute;
 import jakarta.persistence.metamodel.StaticMetamodel;
-import java.util.Date;
+import java.time.LocalDate;
 
 @StaticMetamodel(Reservation.class)
 @Generated("org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor")
@@ -15,7 +15,7 @@ public abstract class Reservation_ extends com.hotel.reservationSystem.models.Ba
 	/**
 	 * @see com.hotel.reservationSystem.models.Reservation#createdAt
 	 **/
-	public static volatile SingularAttribute<Reservation, Date> createdAt;
+	public static volatile SingularAttribute<Reservation, LocalDate> createdAt;
 	
 	/**
 	 * @see com.hotel.reservationSystem.models.Reservation#roomCarts

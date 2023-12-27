@@ -1,6 +1,8 @@
 package com.hotel.reservationSystem.models;
 
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -9,7 +11,7 @@ import java.util.Objects;
 @Entity
 public class Reservation extends BaseEntity {
     @Temporal(TemporalType.DATE)
-    private Date createdAt;
+    private LocalDate createdAt;
 
     @OneToMany(mappedBy = "reservation")
     private List<RoomCart> roomCarts;
@@ -24,15 +26,15 @@ public class Reservation extends BaseEntity {
     public Reservation() {
     }
 
-    public Reservation(Date createdAt) {
+    public Reservation(LocalDate createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getCreatedAt() {
+    public LocalDate getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(LocalDate createdAt) {
         this.createdAt = createdAt;
     }
 

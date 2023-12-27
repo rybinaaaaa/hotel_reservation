@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
+
 @Service
 @Transactional(readOnly = true)
 public class UserService {
@@ -57,7 +58,7 @@ public class UserService {
         return em.createQuery(query).getResultList();
     }
 
-    public List<User> findUserByRoomNumberAndDate(int roomNumber, Date fromDate, Date toDate) {
+    public List<User> findUserByRoomNumberAndDate(int roomNumber, LocalDate fromDate, LocalDate toDate) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<User> query = cb.createQuery(User.class);
         Root<User> userRoot = query.from(User.class);
@@ -69,7 +70,7 @@ public class UserService {
         Predicate roomNumberPredicate = cb.equal(roomItemsJoin.get(RoomItem_.roomNumber), roomNumber);
 
         Predicate dateRangePredicate = cb.between(
-                roomCartsJoin.get(RoomCart_.reservedFrom).as(Date.class),
+                roomCartsJoin.get(RoomCart_.reservedFrom).as(LocalDate.class),
                 fromDate,
                 toDate
         );

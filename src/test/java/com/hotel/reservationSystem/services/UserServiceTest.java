@@ -5,27 +5,21 @@ import java.text.SimpleDateFormat;
 
 import com.hotel.reservationSystem.repositories.*;
 import environment.Generator;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import org.aspectj.lang.annotation.Before;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.*;
 
 import static com.hotel.reservationSystem.models.Role.ADMIN;
 import static com.hotel.reservationSystem.models.Role.USER;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -35,6 +29,7 @@ public class UserServiceTest {
     @Mock
     UserRepository userRepository;
 
+    @InjectMocks
     private UserService userService;
 
     private CategoryService categoryService;
@@ -52,13 +47,12 @@ public class UserServiceTest {
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     @Autowired
-    public UserServiceTest(UserService userService, RoomService roomService, CategoryService categoryService, RoomItemService roomItemService, RoomCartService roomCartService, ReservationService reservationService) {
+    public UserServiceTest(RoomService roomService, CategoryService categoryService, RoomItemService roomItemService, RoomCartService roomCartService, ReservationService reservationService) {
         this.roomService = roomService;
         this.categoryService = categoryService;
         this.roomItemService = roomItemService;
         this.roomCartService = roomCartService;
         this.reservationService = reservationService;
-        this.userService = userService;
     }
 
 
@@ -115,16 +109,15 @@ public class UserServiceTest {
 
     @Test
     void findUserById() {
-        int userId = 1;
-        User expectedUser = new User();
-        expectedUser.setId(userId);
+        User user = Generator.generateUser();
+        userService.save(user);
 
-        when(userRepository.findById(userId)).thenReturn(Optional.of(expectedUser));
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
 
-        User result = userService.find(userId);
+        User result = userService.find(user.getId());
 
         assertNotNull(result);
-        assertEquals(expectedUser, result);
+        assertEquals(user, result);
     }
 
     private Room createRoom(String name, RoomType type, RoomClassification classification, Double price, List<Category> categories) {
@@ -141,43 +134,36 @@ public class UserServiceTest {
         Category category1 = new Category();
         category1.setName("Pet friendly");
         categoryService.save(category1);
-
-        Category category2 = new Category();
-        category2.setName("Best suggestion");
-        categoryService.save(category2);
-
         this.room1 = createRoom("Room 1", RoomType.SINGLE, RoomClassification.STANDARD, 100.0, List.of(category1));
-        this.room2 = createRoom("Room 2", RoomType.DOUBLE, RoomClassification.DELUXE, 200.0, List.of(category1, category2));
-        this.room3 = createRoom("Room 3", RoomType.SINGLE, RoomClassification.DELUXE, 300.0, List.of(category2));
-        roomService.save(List.of(room1, room2, room3));
 
         RoomItem roomItem1 = new RoomItem();
         roomItem1.setRoomNumber(1);
         roomItemService.addRoomItemToRoom(room1, roomItem1);
         roomItemService.save(roomItem1);
 
-        RoomCart roomCart1 = new RoomCart(new Date(2023, Calendar.AUGUST, 10), new Date(2023, Calendar.NOVEMBER, 10));
+        RoomCart roomCart1 = new RoomCart(LocalDate.of(2023, 8, 10), LocalDate.of(2023, 11, 10));
         roomCartService.addRoomItemToRoomCart(roomCart1, roomItem1);
         roomCartService.save(roomCart1);
 
         User user = Generator.generateUser();
+        user.setPhone(123);
         userService.save(user);
 
-        Reservation reservation = new Reservation();
-        reservation.setUser(user);
-        reservation.setCreatedAt(new Date(2023, 12,12));
-        reservation.addRoomCart(roomCart1);
-        reservationService.save(reservation);
+        Reservation reservation1 = new Reservation();
+        reservation1.setUser(user);
+        reservation1.setCreatedAt(LocalDate.of(2023, 11,12));
+        reservation1.addRoomCart(roomCart1);
+        reservationService.save(reservation1);
 
-        roomCart1.setReservation(reservation);
+        roomCart1.setReservation(reservation1);
         roomCartService.update(roomCart1.getId(),roomCart1);
     }
 
 
     @Test
-    public void findUserByRoomNumberAndDate(){
+    public void findUserByRoomNumberAndDateTest(){
         setUpCart();
-        List<User> users = userService.findUserByRoomNumberAndDate(1, new Date(2023, Calendar.AUGUST, 10),new Date(2023, Calendar.NOVEMBER, 10) );
+        List<User> users = userService.findUserByRoomNumberAndDate(1, LocalDate.of(2023, 8, 10),LocalDate.of(2023, 11, 10) );
         assertEquals(1, users.get(0).getId());
     }
 

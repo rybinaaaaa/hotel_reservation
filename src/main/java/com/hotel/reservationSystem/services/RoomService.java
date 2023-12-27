@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -88,14 +89,14 @@ public class RoomService {
         roomRepository.deleteById(id);
     }
 
-    private List<Room> getFreeRooms(Date from, Date to, List<Room> rooms) {
+    private List<Room> getFreeRooms(LocalDate from, LocalDate to, List<Room> rooms) {
         return rooms.stream().filter(room -> !room.getFreeRoomItems(from, to).isEmpty()).collect(Collectors.toList());
     }
 
     public List<Room> getFilteredRoom(Optional<Integer> page,
                                       Optional<Integer> perPage,
-                                      Optional<Date> from,
-                                      Optional<Date> to,
+                                      Optional<LocalDate> from,
+                                      Optional<LocalDate> to,
                                       Optional<String> category,
                                       Optional<String> roomType,
                                       Optional<String> roomClassification,
@@ -111,8 +112,8 @@ public class RoomService {
             Join<Room, RoomItem> roomItemJoin = roomRoot.join(Room_.roomItems);
             Join<RoomItem, RoomCart> roomCartJoin = roomItemJoin.join(RoomItem_.roomCarts, JoinType.LEFT);
 
-            Predicate startsBeforeOrDuringTo = cb.lessThanOrEqualTo(roomCartJoin.<Date>get(RoomCart_.reservedFrom), to.get());
-            Predicate endsAfterOrDuringFrom = cb.greaterThanOrEqualTo(roomCartJoin.<Date>get(RoomCart_.reservedTo), from.get());
+            Predicate startsBeforeOrDuringTo = cb.lessThanOrEqualTo(roomCartJoin.<LocalDate>get(RoomCart_.reservedFrom), to.get());
+            Predicate endsAfterOrDuringFrom = cb.greaterThanOrEqualTo(roomCartJoin.<LocalDate>get(RoomCart_.reservedTo), from.get());
 
             Predicate overlaps = cb.and(startsBeforeOrDuringTo, endsAfterOrDuringFrom);
             Predicate noBookingOrNotOverlapping = cb.or(cb.isNull(roomCartJoin.get(RoomCart_.id)), cb.not(overlaps));

@@ -3,6 +3,7 @@ package com.hotel.reservationSystem.models;
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -11,12 +12,12 @@ public class RoomCart extends BaseEntity {
     @Column(name = "reserved_from")
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "dd/MM/yyyy")
-    private Date reservedFrom;
+    private LocalDate reservedFrom;
 
     @Column(name = "reserved_to")
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "dd/MM/yyyy")
-    private Date reservedTo;
+    private LocalDate reservedTo;
 
     @ManyToOne
     @JoinColumn(name = "reservation_id", referencedColumnName = "id")
@@ -29,24 +30,24 @@ public class RoomCart extends BaseEntity {
     public RoomCart() {
     }
 
-    public RoomCart(Date reservedFrom, Date reservedTo) {
+    public RoomCart(LocalDate reservedFrom, LocalDate reservedTo) {
         this.reservedFrom = reservedFrom;
         this.reservedTo = reservedTo;
     }
 
-    public Date getReservedFrom() {
+    public LocalDate getReservedFrom() {
         return reservedFrom;
     }
 
-    public void setReservedFrom(Date reservedFrom) {
+    public void setReservedFrom(LocalDate reservedFrom) {
         this.reservedFrom = reservedFrom;
     }
 
-    public Date getReservedTo() {
+    public LocalDate getReservedTo() {
         return reservedTo;
     }
 
-    public void setReservedTo(Date reservedTo) {
+    public void setReservedTo(LocalDate reservedTo) {
         this.reservedTo = reservedTo;
     }
 
