@@ -25,11 +25,16 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 @Transactional
 @TestPropertySource(locations = "classpath:application-test.properties")
-public class UserServiceTest {
+public class UserServiceMockTest {
+    @Mock
+    UserRepository userRepository;
 
+    @InjectMocks
     private UserService userService;
 
     private CategoryService categoryService;
+
+    private RoomService roomService;
 
     private RoomItemService roomItemService;
 
@@ -37,20 +42,83 @@ public class UserServiceTest {
 
     private ReservationService reservationService;
 
-    private RoomService roomService;
-
     Room room1;
 
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
     @Autowired
-    public UserServiceTest(RoomService roomService, UserService userService, CategoryService categoryService, RoomItemService roomItemService, RoomCartService roomCartService, ReservationService reservationService) {
-        this.userService = userService;
+    public UserServiceMockTest(RoomService roomService, CategoryService categoryService, RoomItemService roomItemService, RoomCartService roomCartService, ReservationService reservationService) {
+        this.roomService = roomService;
         this.categoryService = categoryService;
         this.roomItemService = roomItemService;
         this.roomCartService = roomCartService;
         this.reservationService = reservationService;
-        this.roomService = roomService;
     }
 
+
+    @Test
+    public void saveSavesUserAndSetsDefaultRole() {
+        User user = Generator.generateUser();
+        userService.save(user);
+
+        final ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
+        verify(userRepository).save(captor.capture());
+        assertEquals(USER, captor.getValue().getRole());
+    }
+
+    @Test
+    public void saveSavesUser() {
+        User user = Generator.generateUser();
+        userService.save(user);
+
+        ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
+        verify(userRepository, times(1)).save(userCaptor.capture());
+        User savedUser = userCaptor.getValue();
+        assertNotNull(savedUser);
+        assertEquals(user.getId(), savedUser.getId());
+        assertEquals(Role.USER, savedUser.getRole());
+    }
+
+
+    @Test
+    public void updateUpdatesUser() {
+        Integer userId = 1;
+        User existingUser = new User(123, "John", "Doe", "password", "john.doe@example.com", USER);
+        existingUser.setId(userId);
+        userService.save(existingUser);
+
+        User updatedUser = new User(456, "Updated", "User", "updatedPassword", "updated@example.com", ADMIN);
+
+        User result = userService.update(userId, updatedUser);
+        assertEquals(userId, result.getId());
+        assertEquals(updatedUser.getFirstName(), result.getFirstName());
+        assertEquals(updatedUser.getLastName(), result.getLastName());
+        assertEquals(updatedUser.getPassword(), result.getPassword());
+        assertEquals(updatedUser.getEmail(), result.getEmail());
+        assertEquals(updatedUser.getRole(), result.getRole());
+    }
+
+    @Test
+    void deleteUser() {
+        int userId = 1;
+
+        userService.delete(userId);
+
+        verify(userRepository, times(1)).deleteById(userId);
+    }
+
+    @Test
+    void findUserById() {
+        User user = Generator.generateUser();
+        userService.save(user);
+
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+
+        User result = userService.find(user.getId());
+
+        assertNotNull(result);
+        assertEquals(user, result);
+    }
 
     private Room createRoom(String name, RoomType type, RoomClassification classification, Double price, List<Category> categories) {
         Room room = new Room();
@@ -59,7 +127,6 @@ public class UserServiceTest {
         room.setRoomClassification(classification);
         room.setPrice(price);
         room.setCategories(categories);
-        roomService.save(room);
         return room;
     }
 
