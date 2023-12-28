@@ -61,7 +61,6 @@ public class RoomServiceTest {
         RoomItem roomItem2 = new RoomItem();
         roomItemService.addRoomItemToRoom(room2, roomItem2);
 
-        String dateString = "07-10-2023";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
         LocalDate fromReserved1 = LocalDate.parse("07-10-2023", formatter);
