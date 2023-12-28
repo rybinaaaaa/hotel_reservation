@@ -86,3 +86,15 @@ CREATE TABLE IF NOT EXISTS room_cart
     CONSTRAINT fk_room_cart_reservation_id FOREIGN KEY (reservation_id) REFERENCES reservation,
     CONSTRAINT fk_room_cart_room_item_id FOREIGN KEY (room_item_id) REFERENCES room_item
     );
+
+delete from app_user where email = 'root';
+
+insert into app_user (phone, email, first_name, last_name, password, role)
+VALUES (
+           937429874,
+           'root',
+           'root',
+           'root',
+           'root',
+           'USER'
+       );
