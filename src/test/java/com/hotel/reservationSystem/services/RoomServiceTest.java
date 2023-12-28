@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -60,13 +61,16 @@ public class RoomServiceTest {
         RoomItem roomItem2 = new RoomItem();
         roomItemService.addRoomItemToRoom(room2, roomItem2);
 
-        LocalDate fromReserved1 = LocalDate.parse("07/10/2023");
-        LocalDate toReserved1 = LocalDate.parse("10/10/2023");
+        String dateString = "07-10-2023";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        LocalDate fromReserved1 = LocalDate.parse("07-10-2023", formatter);
+        LocalDate toReserved1 = LocalDate.parse("10-10-2023", formatter);
         RoomCart roomCart1 = new RoomCart(fromReserved1, toReserved1);
         roomCartService.addRoomItemToRoomCart(roomCart1, roomItem1);
 
-        LocalDate fromReserved2 = LocalDate.parse("15/10/2023");
-        LocalDate toReserved2 = LocalDate.parse("20/10/2023");
+        LocalDate fromReserved2 = LocalDate.parse("15-10-2023", formatter);
+        LocalDate toReserved2 = LocalDate.parse("20-10-2023", formatter);
         RoomCart roomCart2 = new RoomCart(fromReserved2, toReserved2);
         roomCartService.addRoomItemToRoomCart(roomCart2, roomItem2);
     }
