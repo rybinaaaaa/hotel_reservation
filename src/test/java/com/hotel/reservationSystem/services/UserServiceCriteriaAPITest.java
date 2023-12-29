@@ -1,14 +1,9 @@
 package com.hotel.reservationSystem.services;
 
 import com.hotel.reservationSystem.models.*;
-import java.text.SimpleDateFormat;
 
-import com.hotel.reservationSystem.repositories.*;
 import environment.Generator;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
@@ -17,15 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.*;
 
-import static com.hotel.reservationSystem.models.Role.ADMIN;
-import static com.hotel.reservationSystem.models.Role.USER;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @Transactional
 @TestPropertySource(locations = "classpath:application-test.properties")
-public class UserServiceTest {
+public class UserServiceCriteriaAPITest {
 
     private UserService userService;
 
@@ -42,7 +34,7 @@ public class UserServiceTest {
     Room room1;
 
     @Autowired
-    public UserServiceTest(RoomService roomService, UserService userService, CategoryService categoryService, RoomItemService roomItemService, RoomCartService roomCartService, ReservationService reservationService) {
+    public UserServiceCriteriaAPITest(RoomService roomService, UserService userService, CategoryService categoryService, RoomItemService roomItemService, RoomCartService roomCartService, ReservationService reservationService) {
         this.userService = userService;
         this.categoryService = categoryService;
         this.roomItemService = roomItemService;

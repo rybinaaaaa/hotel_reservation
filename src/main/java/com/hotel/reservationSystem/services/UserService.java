@@ -1,6 +1,7 @@
 package com.hotel.reservationSystem.services;
 
 
+import com.hotel.reservationSystem.exception.UserAlreadyExistsException;
 import com.hotel.reservationSystem.models.*;
 import com.hotel.reservationSystem.repositories.UserRepository;
 import jakarta.persistence.EntityManager;
@@ -12,14 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 
 @Service
 @Transactional(readOnly = true)
-public class UserService {
+public class UserService{
     private final UserRepository userRepository;
 
     @PersistenceContext
@@ -92,6 +91,24 @@ public class UserService {
 
     public List<User> findUsersWithReservationsAfterSpecificDate(LocalDate date){
         return userRepository.findUsersWithReservationsAfterSpecificDate(date);
+    }
+
+    public User registerNewUserAccount(UserDto userDto) throws UserAlreadyExistsException {
+        if (emailExists(userDto.getEmail())) {
+            throw new UserAlreadyExistsException(userDto.getEmail());
+        }
+
+        User user = new User();
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setPassword(userDto.getPassword());
+        user.setEmail(userDto.getEmail());
+        user.setPhone(userDto.getPhone());
+        user.setRole(Role.USER);
+
+        return userRepository.save(user);    }
+    private boolean emailExists(String email) {
+        return userRepository.findByEmail(email) != null;
     }
 
 
