@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS app_user
 (
     id SERIAL NOT NULL,
-    phone INTEGER,
+    phone VARCHAR(255),
     email VARCHAR(255),
     first_name VARCHAR(255),
     last_name VARCHAR(255),
@@ -91,7 +91,7 @@ delete from app_user where email = 'root';
 
 insert into app_user (phone, email, first_name, last_name, password, role)
 VALUES (
-           937429874,
+           '937429874',
            'root',
            'root',
            'root',

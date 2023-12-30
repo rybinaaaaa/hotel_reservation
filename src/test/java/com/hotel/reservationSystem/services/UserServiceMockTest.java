@@ -83,11 +83,11 @@ public class UserServiceMockTest {
     @Test
     public void updateUpdatesUser() {
         Integer userId = 1;
-        User existingUser = new User(123, "John", "Doe", "password", "john.doe@example.com", USER);
+        User existingUser = new User("4354534454", "John", "Doe", "password", "john.doe@example.com", USER);
         existingUser.setId(userId);
         userService.save(existingUser);
 
-        User updatedUser = new User(456, "Updated", "User", "updatedPassword", "updated@example.com", ADMIN);
+        User updatedUser = new User("4336563567", "Updated", "User", "updatedPassword", "updated@example.com", ADMIN);
 
         User result = userService.update(userId, updatedUser);
         assertEquals(userId, result.getId());
@@ -146,7 +146,7 @@ public class UserServiceMockTest {
         roomCartService.save(roomCart1);
 
         User user = Generator.generateUser();
-        user.setPhone(123);
+        user.setPhone("+380607893378");
         userService.save(user);
 
         Reservation reservation1 = new Reservation();

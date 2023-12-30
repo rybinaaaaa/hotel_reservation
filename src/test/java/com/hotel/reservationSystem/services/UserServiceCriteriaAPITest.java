@@ -71,7 +71,7 @@ public class UserServiceCriteriaAPITest {
         roomCartService.save(roomCart1);
 
         User user = Generator.generateUser();
-        user.setPhone(123);
+        user.setPhone("+380508348892");
         userService.save(user);
 
         Reservation reservation1 = new Reservation();

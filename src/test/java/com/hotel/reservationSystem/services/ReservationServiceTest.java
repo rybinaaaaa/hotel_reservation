@@ -176,7 +176,7 @@ public class ReservationServiceTest {
         roomCartService.save(roomCart1);
 
         User user = Generator.generateUser();
-        user.setPhone(123);
+        user.setPhone("+380508594427");
         userService.save(user);
 
         Reservation reservation1 = new Reservation();
@@ -202,7 +202,7 @@ public class ReservationServiceTest {
     @Test
     public void findReservationsByUserPhoneTest(){
         Reservation expected = setUpCart();
-        List<Reservation> result = reservationService.findReservationsByUserPhone(123);
+        List<Reservation> result = reservationService.findReservationsByUserPhone("+380508357749");
         assertEquals(expected.getId(), result.get(0).getId());
     }
 

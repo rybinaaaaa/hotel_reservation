@@ -39,7 +39,7 @@ public abstract class User_ extends com.hotel.reservationSystem.models.BaseEntit
 	/**
 	 * @see com.hotel.reservationSystem.models.User#phone
 	 **/
-	public static volatile SingularAttribute<User, Integer> phone;
+	public static volatile SingularAttribute<User, String> phone;
 	
 	/**
 	 * @see com.hotel.reservationSystem.models.User

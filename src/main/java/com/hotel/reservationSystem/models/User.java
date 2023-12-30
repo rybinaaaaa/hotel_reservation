@@ -12,7 +12,7 @@ import java.util.Objects;
 public class User extends BaseEntity {
 
     @Column
-    private Integer phone;
+    private String phone;
 
     @Column(name = "first_name")
     private String firstName;
@@ -36,7 +36,7 @@ public class User extends BaseEntity {
 
     }
 
-    public User(Integer phone, String firstName, String lastName, String password, String email, Role role) {
+    public User(String phone, String firstName, String lastName, String password, String email, Role role) {
         this.phone = phone;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -59,11 +59,11 @@ public class User extends BaseEntity {
         reservations.removeIf(r -> Objects.equals(r.getId(), id));
     }
 
-    public Integer getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Integer phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 

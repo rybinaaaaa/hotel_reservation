@@ -17,7 +17,7 @@ import java.util.List;
 
 
 @Service
-@Transactional(readOnly = true)
+@Transactional()
 public class UserService{
     private final UserRepository userRepository;
 
@@ -41,7 +41,7 @@ public class UserService{
         return userRepository.findByLastName(lastName);
     }
 
-    public User findByPhone(Integer phone) {
+        public User findByPhone(String phone) {
         return userRepository.findByPhone(phone);
     }
 

@@ -25,8 +25,6 @@ public class PasswordConstraintValidator implements ConstraintValidator<ValidPas
 
                 new CharacterRule(EnglishCharacterData.Digit, 1),
 
-                new CharacterRule(EnglishCharacterData.Special, 1),
-
                 new WhitespaceRule()
 
         ));

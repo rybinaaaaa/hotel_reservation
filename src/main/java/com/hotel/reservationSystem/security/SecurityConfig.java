@@ -18,6 +18,15 @@ public class SecurityConfig {
         return NoOpPasswordEncoder.getInstance();
     }
 
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .authorizeHttpRequests(auths -> auths
+                        .requestMatchers( "auth/registration", "/error").permitAll()
+                        .anyRequest().hasAnyRole("USER", "ADMIN"))
 
+        ;
+        return http.build();
+    }
 
 }
