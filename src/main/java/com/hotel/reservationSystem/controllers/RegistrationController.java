@@ -1,28 +1,28 @@
 package com.hotel.reservationSystem.controllers;
 
-import com.hotel.reservationSystem.exception.UserAlreadyExistsException;
-import com.hotel.reservationSystem.models.User;
-import com.hotel.reservationSystem.models.UserDto;
+import com.hotel.reservationSystem.controllers.validators.UserValidator;
+import com.hotel.reservationSystem.models.dto.UserDto;
 import com.hotel.reservationSystem.services.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/auth")
 public class RegistrationController {
 
-    UserService userService;
+    private UserService userService;
+    private UserValidator userValidator;
+
 
     @Autowired
-    public RegistrationController(UserService userService){
+    public RegistrationController(UserService userService, UserValidator userValidator){
          this.userService = userService;
+         this.userValidator = userValidator;
     }
 
     @GetMapping("/registration")
@@ -33,19 +33,19 @@ public class RegistrationController {
     }
 
     @PostMapping("/registration")
-    public ModelAndView registerUserAccount(
+    public String registerUserAccount(
             @ModelAttribute("user") @Valid UserDto userDto,
-            HttpServletRequest request,
-            Errors errors) {
-        ModelAndView mav = new ModelAndView();
+            BindingResult bindingResult) {
 
-        try {
-            User registered = userService.registerNewUserAccount(userDto);
-        } catch (UserAlreadyExistsException uaeEx) {
-            mav.addObject("message", "An account for that username/email already exists.");
-            return mav;
+        userValidator.validate(userDto, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            return "/registration";
         }
 
-        return new ModelAndView("successRegister", "user", userDto);
+        userService.registerNewUserAccount(userDto);
+
+        return "successRegister";
     }
+
 }

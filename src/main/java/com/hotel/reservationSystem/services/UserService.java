@@ -1,13 +1,14 @@
 package com.hotel.reservationSystem.services;
 
 
-import com.hotel.reservationSystem.exception.UserAlreadyExistsException;
 import com.hotel.reservationSystem.models.*;
+import com.hotel.reservationSystem.models.dto.UserDto;
 import com.hotel.reservationSystem.repositories.UserRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.*;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,15 +19,17 @@ import java.util.List;
 
 @Service
 @Transactional()
-public class UserService{
+public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @PersistenceContext
     EntityManager em;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public User find(Integer id) {
@@ -41,7 +44,7 @@ public class UserService{
         return userRepository.findByLastName(lastName);
     }
 
-        public User findByPhone(String phone) {
+    public User findByPhone(String phone) {
         return userRepository.findByPhone(phone);
     }
 
@@ -81,7 +84,7 @@ public class UserService{
     }
 
 
-    public List<User> findAll(Integer page, Integer size){
+    public List<User> findAll(Integer page, Integer size) {
         return userRepository.findAll(PageRequest.of(page, size)).getContent();
     }
 
@@ -89,26 +92,22 @@ public class UserService{
         return userRepository.countByRole(role);
     }
 
-    public List<User> findUsersWithReservationsAfterSpecificDate(LocalDate date){
+    public List<User> findUsersWithReservationsAfterSpecificDate(LocalDate date) {
         return userRepository.findUsersWithReservationsAfterSpecificDate(date);
     }
 
-    public User registerNewUserAccount(UserDto userDto) throws UserAlreadyExistsException {
-        if (emailExists(userDto.getEmail())) {
-            throw new UserAlreadyExistsException(userDto.getEmail());
-        }
-
+    public void registerNewUserAccount(UserDto userDto) {
         User user = new User();
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
-        user.setPassword(userDto.getPassword());
+        String password = userDto.getPassword();
+        String encodedPass = passwordEncoder.encode(password);
+        user.setPassword(encodedPass);
         user.setEmail(userDto.getEmail());
         user.setPhone(userDto.getPhone());
         user.setRole(Role.USER);
 
-        return userRepository.save(user);    }
-    private boolean emailExists(String email) {
-        return userRepository.findByEmail(email) != null;
+        userRepository.save(user);
     }
 
 

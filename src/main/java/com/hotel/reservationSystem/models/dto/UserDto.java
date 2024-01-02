@@ -1,6 +1,5 @@
-package com.hotel.reservationSystem.models;
+package com.hotel.reservationSystem.models.dto;
 
-import com.hotel.reservationSystem.controllers.validators.ValidPassword;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -26,7 +25,6 @@ public class UserDto {
 
     @NotNull
     @NotEmpty
-    @ValidPassword
     private String password;
 
 
@@ -38,24 +36,12 @@ public class UserDto {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public String getPhone() {
         return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 
     public void setEmail(String email) {
@@ -64,9 +50,5 @@ public class UserDto {
 
     public String getPassword() {
         return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }
