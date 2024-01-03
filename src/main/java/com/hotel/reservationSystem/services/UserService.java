@@ -2,7 +2,7 @@ package com.hotel.reservationSystem.services;
 
 
 import com.hotel.reservationSystem.models.*;
-import com.hotel.reservationSystem.models.dto.UserDto;
+import com.hotel.reservationSystem.dto.UserDTO;
 import com.hotel.reservationSystem.repositories.UserRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -96,7 +96,7 @@ public class UserService {
         return userRepository.findUsersWithReservationsAfterSpecificDate(date);
     }
 
-    public void registerNewUserAccount(UserDto userDto) {
+    public void registerNewUserAccount(UserDTO userDto) {
         User user = new User();
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());

@@ -1,10 +1,10 @@
-package com.hotel.reservationSystem.models.dto;
+package com.hotel.reservationSystem.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
-public class UserDto {
+public class UserDTO {
     @NotNull
     @NotEmpty
     private String firstName;

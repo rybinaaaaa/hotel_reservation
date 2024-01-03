@@ -1,7 +1,7 @@
 package com.hotel.reservationSystem.controllers;
 
-import com.hotel.reservationSystem.controllers.validators.UserValidator;
-import com.hotel.reservationSystem.models.dto.UserDto;
+import com.hotel.reservationSystem.util.validators.UserValidator;
+import com.hotel.reservationSystem.dto.UserDTO;
 import com.hotel.reservationSystem.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +15,8 @@ import org.springframework.web.context.request.WebRequest;
 @RequestMapping("/auth")
 public class RegistrationController {
 
-    private UserService userService;
-    private UserValidator userValidator;
+    private final UserService userService;
+    private final UserValidator userValidator;
 
 
     @Autowired
@@ -27,14 +27,14 @@ public class RegistrationController {
 
     @GetMapping("/registration")
     public String showRegistrationForm(WebRequest request, Model model) {
-        UserDto userDto = new UserDto();
+        UserDTO userDto = new UserDTO();
         model.addAttribute("user", userDto);
         return "registration";
     }
 
     @PostMapping("/registration")
     public String registerUserAccount(
-            @ModelAttribute("user") @Valid UserDto userDto,
+            @ModelAttribute("user") @Valid UserDTO userDto,
             BindingResult bindingResult) {
 
         userValidator.validate(userDto, bindingResult);

@@ -1,7 +1,7 @@
-package com.hotel.reservationSystem.controllers.validators;
+package com.hotel.reservationSystem.util.validators;
 
 import com.hotel.reservationSystem.models.User;
-import com.hotel.reservationSystem.models.dto.UserDto;
+import com.hotel.reservationSystem.dto.UserDTO;
 import com.hotel.reservationSystem.services.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class UserValidator implements Validator {
 
     @Override
     public void validate(Object o, Errors errors) {
-        UserDto person = (UserDto) o;
+        UserDTO person = (UserDTO) o;
 
         if (userService.findByEmail(person.getEmail()).isEmpty()) {
             return;
