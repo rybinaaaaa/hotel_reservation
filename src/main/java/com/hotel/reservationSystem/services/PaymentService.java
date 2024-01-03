@@ -5,6 +5,7 @@ import com.hotel.reservationSystem.models.Reservation;
 import com.hotel.reservationSystem.repositories.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +26,7 @@ public class PaymentService {
         return paymentRepository.findById(id).orElse(null);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<Payment> findAll() {
         return paymentRepository.findAll();
     }

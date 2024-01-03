@@ -62,6 +62,7 @@ public class UserService {
         return em.createQuery(query).getResultList();
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<User> findUserByRoomNumberAndDate(int roomNumber, LocalDate fromDate, LocalDate toDate) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<User> query = cb.createQuery(User.class);
@@ -91,10 +92,12 @@ public class UserService {
         return userRepository.findAll(PageRequest.of(page, size)).getContent();
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Integer countByRole(Role role) {
         return userRepository.countByRole(role);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<User> findUsersWithReservationsAfterSpecificDate(LocalDate date) {
         return userRepository.findUsersWithReservationsAfterSpecificDate(date);
     }

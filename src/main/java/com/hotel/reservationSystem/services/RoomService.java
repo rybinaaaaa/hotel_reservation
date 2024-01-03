@@ -9,6 +9,7 @@ import jakarta.persistence.criteria.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -145,6 +146,7 @@ public class RoomService {
         return query.getResultList();
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Transactional
     public Room deleteRoomFromHotel(Room room) {
         Hotel hotel = room.getHotel();
@@ -155,6 +157,7 @@ public class RoomService {
         return save(room);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Transactional
     public Room addRoomToHotel(Room room, Hotel hotel) {
         room.setHotel(hotel);

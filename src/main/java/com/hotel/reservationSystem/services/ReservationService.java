@@ -8,6 +8,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,6 +48,7 @@ public class ReservationService {
         reservationRepository.deleteById(id);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<Reservation> findAll() {
         return reservationRepository.findAll(Sort.by(Sort.Direction.ASC, "created_at"));
     }
@@ -63,6 +65,7 @@ public class ReservationService {
         reservation.setCreatedAt(LocalDate.now());
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Reservation findReservationByDateAndRoomNumber(LocalDate from, LocalDate to, Integer roomNumber) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Reservation> query = cb.createQuery(Reservation.class);
@@ -87,6 +90,7 @@ public class ReservationService {
         return result.isEmpty() ? null : result.get(0);
     }
 
+    @PreAuthorize("#phone == authentication.principal.phone or hasRole('ROLE_ADMIN')")
     public List<Reservation> findReservationsByUserPhone(String phone) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Reservation> query = cb.createQuery(Reservation.class);
@@ -100,7 +104,7 @@ public class ReservationService {
 
         return em.createQuery(query).getResultList();
     }
-
+    @PreAuthorize("(#fName == authentication.principal.firstName and #lName == authentication.principal.lastName) or hasRole('ROLE_ADMIN')")
     public List<Reservation> findReservationsByUserName(String fName, String lName) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Reservation> query = cb.createQuery(Reservation.class);
@@ -116,6 +120,7 @@ public class ReservationService {
         return em.createQuery(query).getResultList();
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<Reservation> findReservationsByRoomNumber(Integer roomNum) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Reservation> query = cb.createQuery(Reservation.class);
