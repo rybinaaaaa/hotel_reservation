@@ -8,6 +8,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.*;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,7 @@ public class UserService {
         return userRepository.findById(id).orElse(null);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<User> findAll() {
         return userRepository.findAll();
     }
@@ -84,6 +86,7 @@ public class UserService {
     }
 
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<User> findAll(Integer page, Integer size) {
         return userRepository.findAll(PageRequest.of(page, size)).getContent();
     }
