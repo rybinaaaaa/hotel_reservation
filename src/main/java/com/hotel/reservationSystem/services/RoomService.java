@@ -45,10 +45,6 @@ public class RoomService {
         return roomRepository.findAll(PageRequest.of(page, size)).getContent();
     }
 
-    public List<Room> findByName(String lastName) {
-        return roomRepository.findByName(lastName);
-    }
-
     public List<Room> findByPrice(Double price) {
         return roomRepository.findByPrice(price);
     }

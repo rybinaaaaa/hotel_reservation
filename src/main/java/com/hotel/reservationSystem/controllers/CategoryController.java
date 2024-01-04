@@ -36,4 +36,9 @@ public class CategoryController {
         categoryService.save(category);
         return  ResponseEntity.status(201).body(category);
     }
+
+    @GetMapping(value = "{name}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Category getCategoryByName(@PathVariable String name){
+        return  categoryService.findByName(name);
+    }
 }

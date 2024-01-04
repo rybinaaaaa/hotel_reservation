@@ -31,10 +31,6 @@ public class CategoryService {
         return categoryRepository.findByName(name);
     }
 
-    //    do we need pagination here?
-//    public List<Category> findAll(int page, int size){
-//        return categoryRepository.findAll(PageRequest.of(page, size)).getContent();
-//    }
     @Transactional
     public Category addRoomToCatagory(Room room, Category category) {
         category.addRoom(room);

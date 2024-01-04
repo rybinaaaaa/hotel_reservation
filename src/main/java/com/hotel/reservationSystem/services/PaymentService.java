@@ -31,6 +31,7 @@ public class PaymentService {
         return paymentRepository.findAll();
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<Payment> findAll(Integer page, Integer size) {
         return paymentRepository.findAll(PageRequest.of(page, size)).getContent();
     }

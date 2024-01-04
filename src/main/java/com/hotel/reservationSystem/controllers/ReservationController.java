@@ -7,10 +7,12 @@ import com.hotel.reservationSystem.services.ReservationService;
 import com.hotel.reservationSystem.services.RoomCartService;
 import com.hotel.reservationSystem.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -87,5 +89,34 @@ public class ReservationController {
         User user = userService.find(id);
         if (user == null) return null;
         return reservationService.findAllByUser(user);
+    }
+
+    @GetMapping("/dateAndRoomNumber")
+    public ResponseEntity<Reservation> findReservationByDateAndRoomNumber(
+            @RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+            @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
+            @RequestParam("roomNumber") Integer roomNumber) {
+        Reservation reservation = reservationService.findReservationByDateAndRoomNumber(from, to, roomNumber);
+        if (reservation != null) {
+            return new ResponseEntity<>(reservation, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/userPhone")
+    public List<Reservation> findReservationsByUserPhone(@RequestParam("phone") String phone) {
+        return reservationService.findReservationsByUserPhone(phone);
+    }
+
+    @GetMapping("/userName")
+    public List<Reservation> findReservationsByUserName(
+            @RequestParam("firstName") String fName,
+            @RequestParam("lastName") String lName) {
+        return reservationService.findReservationsByUserName(fName, lName);
+    }
+
+    @GetMapping("/roomNumber")
+    public List<Reservation> findReservationsByRoomNumber(@RequestParam("roomNumber") Integer roomNum) {
+        return reservationService.findReservationsByRoomNumber(roomNum);
     }
 }

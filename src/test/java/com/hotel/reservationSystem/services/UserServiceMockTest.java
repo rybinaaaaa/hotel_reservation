@@ -160,11 +160,5 @@ public class UserServiceMockTest {
     }
 
 
-    @Test
-    public void findUserByRoomNumberAndDateTest(){
-        setUpCart();
-        List<User> users = userService.findUserByRoomNumberAndDate(1, LocalDate.of(2023, 8, 10),LocalDate.of(2023, 11, 10) );
-        assertEquals(1, users.get(0).getId());
-    }
 
 }

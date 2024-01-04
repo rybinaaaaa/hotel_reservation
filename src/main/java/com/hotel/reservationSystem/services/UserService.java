@@ -42,8 +42,8 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User findByName(String lastName) {
-        return userRepository.findByLastName(lastName);
+    public User findByName(String firstName, String lastName) {
+        return userRepository.findByFirstNameAndLastName(firstName, lastName);
     }
 
     public User findByPhone(String phone) {

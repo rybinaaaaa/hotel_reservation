@@ -45,8 +45,8 @@ public class RoomCartService {
         return roomCartRepository.findAll();
     }
 
-    public void save(List<RoomCart> roomCarts) {
-        roomCartRepository.saveAll(roomCarts);
+    public List<RoomCart> save(List<RoomCart> roomCarts) {
+        return roomCartRepository.saveAll(roomCarts);
     }
 
     @Transactional
