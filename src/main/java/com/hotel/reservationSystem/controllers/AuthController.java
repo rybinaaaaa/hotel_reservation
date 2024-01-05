@@ -13,17 +13,23 @@ import org.springframework.web.context.request.WebRequest;
 
 @Controller
 @RequestMapping("/auth")
-public class RegistrationController {
+public class AuthController {
 
     private final UserService userService;
     private final UserValidator userValidator;
 
 
     @Autowired
-    public RegistrationController(UserService userService, UserValidator userValidator){
+    public AuthController(UserService userService, UserValidator userValidator){
          this.userService = userService;
          this.userValidator = userValidator;
     }
+
+    @GetMapping("/login")
+    public String loginPage() {
+        return "login";
+    }
+
 
     @GetMapping("/registration")
     public String showRegistrationForm(WebRequest request, Model model) {

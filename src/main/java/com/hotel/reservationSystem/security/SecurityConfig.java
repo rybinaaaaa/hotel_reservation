@@ -22,9 +22,18 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests(authz -> authz
-                        .requestMatchers("/auth/registration").permitAll()
+                        .requestMatchers("auth/login","/auth/registration").permitAll()
                         .anyRequest().authenticated())
-                .formLogin(withDefaults())
+                .formLogin(login -> login
+                        .loginPage("/auth/login")
+                        .usernameParameter("email")
+                        .loginProcessingUrl("/process_login")
+                        .defaultSuccessUrl("/hello", true)
+                        .failureUrl("/auth/login?error"))
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/auth/login"))
+//                .formLogin(withDefaults())
                 .httpBasic(withDefaults());
         return http.build();
     }
