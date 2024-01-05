@@ -3,6 +3,7 @@ package com.hotel.reservationSystem.controllers;
 import com.hotel.reservationSystem.models.Role;
 import com.hotel.reservationSystem.models.User;
 import com.hotel.reservationSystem.services.UserService;
+import jdk.jfr.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
     private final UserService userService;
 
@@ -29,8 +30,12 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public User show(@PathVariable("id") Integer id) {
-        return userService.find(id);
+    public ResponseEntity<User> show(@PathVariable("id") Integer id) {
+        User user = userService.find(id);
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @PostMapping("/add")
@@ -40,6 +45,7 @@ public class UserController {
         }
         return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable("id") Integer id) {
@@ -87,6 +93,16 @@ public class UserController {
     public ResponseEntity<User> findUserByName(@RequestParam("firstName") String firstName,@RequestParam("lastName") String lastName ) {
         User user = userService.findByName(firstName, lastName);
         if (user != null) {
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @PutMapping("/role")
+    public ResponseEntity<User> changeRoleToAdmin(@RequestBody String email) {
+        User user = userService.findByEmail(email);
+        if (user != null) {
+            user.setRole(Role.ADMIN);
             return new ResponseEntity<>(user, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);

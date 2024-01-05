@@ -30,7 +30,7 @@ public class UserValidator implements Validator {
     public void validate(Object o, Errors errors) {
         UserDTO person = (UserDTO) o;
 
-        if (userService.findByEmail(person.getEmail()).isEmpty()) {
+        if (userService.findByEmail(person.getEmail()) == null) {
             return;
         }
 

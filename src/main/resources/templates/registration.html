@@ -12,7 +12,7 @@
         First name error!
     </div>
     <br/>
-
+|
     <label for="lastName"> Enter your last name </label>
     <input type="text" id="lastName" name="lastName" th:field="*{lastName}"/>
     <div style="color:red" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">

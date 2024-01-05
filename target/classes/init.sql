@@ -88,6 +88,8 @@ CREATE TABLE IF NOT EXISTS room_cart
     );
 
 delete from app_user where email = 'root@root.com';
+delete from app_user where email = 'test@test.com';
+
 
 insert into app_user (phone, email, first_name, last_name, password, role)
 VALUES (
@@ -95,6 +97,42 @@ VALUES (
            'root@root.com',
            'root',
            'root',
-           'root',
+           '$2a$10$RzWzQ5t2xZq.i94.DRDIt.wS.2rQndo33gIq3ISfLu9DRdxK9Vjha' /*root*/,
            'USER'
        );
+insert into app_user (phone, email, first_name, last_name, password, role)
+VALUES (
+           '38000000000',
+           'test@test.com',
+           'test',
+           'test',
+           '$2a$10$1ID9XNtUgrzsNU2n28E/0uO2/i9sXxLWR/wkS2ZE6UR5x19zDKwjq', /*test*/
+           'ADMIN'
+       );
+
+DELETE FROM room_cart;
+DELETE FROM room_item;
+DELETE FROM reservation;
+
+-- Then delete from parent tables
+DELETE FROM room;
+DELETE FROM hotel;
+--
+--
+INSERT INTO hotel (name, address)
+VALUES ('Sample Hotel', '123 Main Street');
+
+INSERT INTO room (name, price, description, room_classification, room_type, hotel_id)
+VALUES ('Standard Room', 80.00, 'A cozy standard room', 'STANDARD', 'SINGLE', (SELECT id FROM hotel WHERE name = 'Sample Hotel'));
+
+INSERT INTO room_item (room_number, room_id)
+VALUES (101, (SELECT id FROM room WHERE room_type = 'SINGLE')); -- Assuming room_id 1 exists in the hotel
+
+INSERT INTO reservation (created_at, user_id) VALUES ('2023-01-05',(SELECT id FROM app_user WHERE email = 'test@test.com') );
+
+INSERT INTO room_cart (reserved_from, reserved_to, reservation_id, room_item_id)
+VALUES ('2023-01-05', '2023-01-10', (SELECT id FROM reservation WHERE room_number = 101), (SELECT id FROM room_item WHERE room_number = 101));
+
+UPDATE reservation
+SET room_cart = (SELECT id FROM room_cart WHERE reserved_from = '2023-01-05')
+WHERE created_at = '2023-01-05';

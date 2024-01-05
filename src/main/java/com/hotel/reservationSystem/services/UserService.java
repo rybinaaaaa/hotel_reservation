@@ -50,16 +50,8 @@ public class UserService {
         return userRepository.findByPhone(phone);
     }
 
-    public List<User> findByEmail(String email) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<User> query = cb.createQuery(User.class);
-        Root<User> userRoot = query.from(User.class);
-
-        Predicate emailPredicate = cb.equal(userRoot.get(User_.email), email);
-
-        query.where(emailPredicate).distinct(true);
-
-        return em.createQuery(query).getResultList();
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

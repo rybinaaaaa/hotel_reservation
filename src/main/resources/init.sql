@@ -88,6 +88,8 @@ CREATE TABLE IF NOT EXISTS room_cart
     );
 
 delete from app_user where email = 'root@root.com';
+delete from app_user where email = 'test@test.com';
+
 
 insert into app_user (phone, email, first_name, last_name, password, role)
 VALUES (
@@ -95,6 +97,15 @@ VALUES (
            'root@root.com',
            'root',
            'root',
-           'root',
+           '$2a$10$RzWzQ5t2xZq.i94.DRDIt.wS.2rQndo33gIq3ISfLu9DRdxK9Vjha' /*root*/,
            'USER'
+       );
+insert into app_user (phone, email, first_name, last_name, password, role)
+VALUES (
+           '38000000000',
+           'test@test.com',
+           'test',
+           'test',
+           '$2a$10$1ID9XNtUgrzsNU2n28E/0uO2/i9sXxLWR/wkS2ZE6UR5x19zDKwjq', /*test*/
+           'ADMIN'
        );

@@ -38,6 +38,11 @@ public class AuthController {
         return "registration";
     }
 
+    @PostMapping("/registration2")
+    public String newRegistration() {
+        return "successRegister";
+    }
+
     @PostMapping("/registration")
     public String registerUserAccount(
             @ModelAttribute("user") @Valid UserDTO userDto,

@@ -11,7 +11,7 @@ import java.util.List;
 
 //to check in the morning
 @RestController
-@RequestMapping("/room_items")
+@RequestMapping("/api/room_items")
 public class RoomItemController {
     private final RoomItemService service;
 

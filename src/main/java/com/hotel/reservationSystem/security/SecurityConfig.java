@@ -10,8 +10,10 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository;
 
 import static org.springframework.security.config.Customizer.withDefaults;
+import static org.springframework.security.web.csrf.CookieCsrfTokenRepository.withHttpOnlyFalse;
 
 @EnableWebSecurity
 @Configuration
@@ -21,6 +23,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"))
                 .authorizeRequests(authz -> authz
                         .requestMatchers("auth/login","/auth/registration").permitAll()
                         .anyRequest().authenticated())
@@ -33,9 +36,9 @@ public class SecurityConfig {
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/auth/login"))
-//                .formLogin(withDefaults())
                 .httpBasic(withDefaults());
         return http.build();
+
     }
 
 

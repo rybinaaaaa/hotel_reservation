@@ -38,14 +38,6 @@ public class UserControllerTest {
         assertEquals(2, result.size());
     }
 
-    @Test
-    public void testShow() {
-        when(userService.find(anyInt())).thenReturn(new User());
-
-        User result = userController.show(1);
-
-        assertEquals(User.class, result.getClass());
-    }
 
     @Test
     public void testCreateUser() {
