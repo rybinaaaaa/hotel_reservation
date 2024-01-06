@@ -1,5 +1,6 @@
 package com.hotel.reservationSystem.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -13,6 +14,7 @@ public class RoomItem extends BaseEntity {
     @Column(name = "room_number")
     private Integer roomNumber;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "roomItem")
     private List<RoomCart> roomCarts;
 

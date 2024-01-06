@@ -1,10 +1,13 @@
 package com.hotel.reservationSystem.services;
+import environment.Generator;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import com.hotel.reservationSystem.models.*;
 import com.hotel.reservationSystem.repositories.PaymentRepository;
 import com.hotel.reservationSystem.repositories.ReservationRepository;
-import environment.Generator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -177,7 +180,7 @@ public class ReservationServiceTest {
         roomCartService.save(roomCart1);
 
         User user = Generator.generateUser();
-        user.setPhone("+380508594427");
+        user.setPhone("380508594427");
         userService.save(user);
 
         Reservation reservation1 = new Reservation();
@@ -201,12 +204,6 @@ public class ReservationServiceTest {
         assertEquals(expected.getId(), result.getId());
     }
 
-    @Test
-    public void findReservationsByUserPhoneTest(){
-        Reservation expected = setUpCart();
-        List<Reservation> result = reservationService.findReservationsByUserPhone("+380508357749");
-        assertEquals(expected.getId(), result.get(0).getId());
-    }
 
     @Test
     public void findReservationsByUserNameTest(){

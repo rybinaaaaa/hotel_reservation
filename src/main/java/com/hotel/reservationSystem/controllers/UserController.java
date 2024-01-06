@@ -57,8 +57,9 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable("id") Integer id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable("id") Integer id) {
         userService.delete(id);
+        return  new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/roomNumberAndDate")

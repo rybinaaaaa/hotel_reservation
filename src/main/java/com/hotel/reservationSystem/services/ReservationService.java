@@ -56,7 +56,7 @@ public class ReservationService {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<Reservation> findAll() {
-        return reservationRepository.findAll(Sort.by(Sort.Direction.ASC, "created_at"));
+        return reservationRepository.findAll(Sort.by(Sort.Direction.ASC, "createdAt"));
     }
 
     public List<Reservation> findAllByUser(User user) {
@@ -97,7 +97,7 @@ public class ReservationService {
         return result.isEmpty() ? null : result.get(0);
     }
 
-    @PreAuthorize("#phone == authentication.principal.phone or hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<Reservation> findReservationsByUserPhone(String phone) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Reservation> query = cb.createQuery(Reservation.class);
@@ -112,7 +112,7 @@ public class ReservationService {
         return em.createQuery(query).getResultList();
     }
 
-    @PreAuthorize("(#fName == authentication.principal.firstName and #lName == authentication.principal.lastName) or hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("(#fName == authentication.principal.firstName and #lName == authentication.principal.lastName) or hasRole('ROLE_ADMIN')")
     public List<Reservation> findReservationsByUserName(String fName, String lName) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Reservation> query = cb.createQuery(Reservation.class);

@@ -89,6 +89,13 @@ CREATE TABLE IF NOT EXISTS room_cart
 
 delete from app_user where email = 'root@root.com';
 delete from app_user where email = 'test@test.com';
+delete from app_user where email = 'dan@new.com';
+
+delete from hotel;
+delete from room;
+delete from reservation;
+delete from room_item;
+delete from room_cart;
 
 
 insert into app_user (phone, email, first_name, last_name, password, role)
@@ -100,8 +107,9 @@ VALUES (
            '$2a$10$RzWzQ5t2xZq.i94.DRDIt.wS.2rQndo33gIq3ISfLu9DRdxK9Vjha' /*root*/,
            'USER'
        );
-insert into app_user (phone, email, first_name, last_name, password, role)
+insert into app_user (id, phone, email, first_name, last_name, password, role)
 VALUES (
+                    1,
            '38000000000',
            'test@test.com',
            'test',
@@ -109,3 +117,34 @@ VALUES (
            '$2a$10$1ID9XNtUgrzsNU2n28E/0uO2/i9sXxLWR/wkS2ZE6UR5x19zDKwjq', /*test*/
            'ADMIN'
        );
+insert into app_user (id, phone, email, first_name, last_name, password, role)
+VALUES (
+           20,
+           '38000837640',
+           'dan@new.com',
+           'dan',
+           'dan',
+           'password',
+           'USER'
+       );
+insert into hotel (id, name, address)
+VALUES (
+           1,
+           'Hotel Royal',
+           'New-York'
+       );
+INSERT INTO Room (id, name, price, description, room_classification, room_type, hotel_id)
+VALUES (1, 'Deluxe Room', 250.0, 'Spacious and luxurious', 'DELUXE', 'DOUBLE', 1);
+
+INSERT INTO Room (id, name, price, description, room_classification, room_type, hotel_id)
+VALUES (2, 'Standard family', 250.0, 'Please do not be strict:)', 'DELUXE', 'FAMILY', 1);
+
+INSERT INTO  reservation (created_at, id, user_id)
+VALUES ('2024.01.01', 1, 1);
+
+INSERT INTO room_item (id, room_id, room_number)
+VALUES(1,1,101);
+
+
+INSERT INTO room_cart(id,reservation_id,reserved_from,reserved_to,room_item_id)
+   VALUES (1,1,'2024.01.01','2024.01.07',1);

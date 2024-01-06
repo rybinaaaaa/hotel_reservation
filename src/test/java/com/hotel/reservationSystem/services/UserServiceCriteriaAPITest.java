@@ -6,6 +6,7 @@ import environment.Generator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -86,6 +87,7 @@ public class UserServiceCriteriaAPITest {
 
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     public void findUserByRoomNumberAndDateTest(){
         setUpCart();
         List<User> users = userService.findUserByRoomNumberAndDate(1, LocalDate.of(2023, 8, 10),LocalDate.of(2023, 11, 10) );

@@ -1,5 +1,6 @@
 package com.hotel.reservationSystem.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Collections;
@@ -14,6 +15,7 @@ public class Hotel extends BaseEntity {
     @Column
     private String address;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "hotel")
     private List<Room> rooms;
 

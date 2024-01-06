@@ -1,5 +1,6 @@
 package com.hotel.reservationSystem.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.*;
@@ -9,6 +10,7 @@ public class Category extends BaseEntity {
     @Column
     private String name;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "categories", cascade = CascadeType.ALL)
     private List<Room> rooms;
 

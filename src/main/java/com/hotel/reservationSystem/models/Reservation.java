@@ -1,5 +1,9 @@
 package com.hotel.reservationSystem.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -10,9 +14,11 @@ public class Reservation extends BaseEntity {
     @Temporal(TemporalType.DATE)
     private LocalDate createdAt;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "reservation")
     private List<RoomCart> roomCarts;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;

@@ -1,5 +1,6 @@
 package com.hotel.reservationSystem.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
 
@@ -28,7 +29,7 @@ public class User extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private Role role;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Reservation> reservations;
 
