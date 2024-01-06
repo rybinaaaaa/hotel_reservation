@@ -3,10 +3,7 @@ package com.hotel.reservationSystem.models;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 public class Reservation extends BaseEntity {
@@ -24,6 +21,7 @@ public class Reservation extends BaseEntity {
     private Payment payment;
 
     public Reservation() {
+        this.createdAt = LocalDate.now();
     }
 
     public Reservation(LocalDate createdAt) {
@@ -62,18 +60,24 @@ public class Reservation extends BaseEntity {
         this.payment = payment;
     }
 
-    public void addRoomCart(RoomCart roomCart) {
-        if (roomCart == null) return;
+    public void addRoomCart(RoomCart ...roomCartsToAdd) {
+        if (roomCartsToAdd == null) return;
+
         if (this.roomCarts == null) {
-            this.roomCarts = Collections.singletonList(roomCart);
-            roomCart.setReservation(this);
-            return;
+            this.roomCarts = new ArrayList<>(Arrays.asList(roomCartsToAdd));
+        } else {
+            for (RoomCart newRoomCart : roomCartsToAdd) {
+                if (this.roomCarts.stream().noneMatch(r -> Objects.equals(r.getId(), newRoomCart.getId()))) {
+                    this.roomCarts.add(newRoomCart);
+                }
+            }
         }
-        if (this.roomCarts.stream().map(r -> Objects.equals(r.getId(), roomCart.getId())).findAny().isEmpty()) {
-            this.roomCarts.add(roomCart);
+
+        for (RoomCart roomCart : roomCartsToAdd) {
             roomCart.setReservation(this);
         }
     }
+
 
     public void deleteRoomCartById(Integer id) {
         if (this.roomCarts == null) return;

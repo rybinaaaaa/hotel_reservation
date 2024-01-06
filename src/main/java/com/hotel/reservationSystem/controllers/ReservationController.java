@@ -1,10 +1,12 @@
 package com.hotel.reservationSystem.controllers;
 
 import com.hotel.reservationSystem.models.Reservation;
+import com.hotel.reservationSystem.models.Room;
 import com.hotel.reservationSystem.models.RoomCart;
 import com.hotel.reservationSystem.models.User;
 import com.hotel.reservationSystem.services.ReservationService;
 import com.hotel.reservationSystem.services.RoomCartService;
+import com.hotel.reservationSystem.services.RoomService;
 import com.hotel.reservationSystem.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -22,21 +24,24 @@ public class ReservationController {
     private final ReservationService reservationService;
     private final RoomCartService roomCartService;
     private final UserService userService;
+    private final RoomService roomService;
 
     @Autowired
-    public ReservationController(ReservationService reservationService, RoomCartService roomCartService, UserService userService) {
+    public ReservationController(ReservationService reservationService, RoomCartService roomCartService, UserService userService, RoomService roomService) {
         this.reservationService = reservationService;
         this.roomCartService = roomCartService;
         this.userService = userService;
+        this.roomService = roomService;
     }
 
     @PostMapping
-    public ResponseEntity<Reservation> create(@RequestBody Reservation reservation, @RequestParam Integer userId, @RequestParam List<RoomCart> roomCarts) {
-        if (Objects.isNull(reservation) || Objects.isNull(userId) || Objects.isNull(roomCarts)) {
+    public ResponseEntity<Reservation> create(@RequestParam Integer userId, @RequestParam List<RoomCart> roomCarts) {
+        if (Objects.isNull(roomCarts)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         User user = userService.find(userId);
+        Reservation reservation = reservationService.create();
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -44,6 +49,40 @@ public class ReservationController {
         roomCartService.save(roomCarts);
 
         reservation.setRoomCarts(roomCarts);
+        reservation.setUser(user);
+
+        Reservation savedReservation = reservationService.save(reservation);
+
+        return new ResponseEntity<>(savedReservation, HttpStatus.CREATED);
+    }
+
+    @PostMapping
+    public ResponseEntity<Reservation> reserveRoom(@RequestParam Integer reservationId, @RequestParam Integer roomId, @RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+                                                   @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
+        Room room = roomService.find(roomId);
+        Reservation reservation = reservationService.find(reservationId);
+        if (room != null || reservation != null) {
+            RoomCart roomCart = roomCartService.createRoomCart(room, from, to);
+            roomCartService.setReservation(roomCart, reservation);
+
+            return new ResponseEntity<>(reservationService.save(reservation), HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping
+    public ResponseEntity<Reservation> create(@RequestParam Integer userId) {
+        if (Objects.isNull(userId)) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        User user = userService.find(userId);
+        Reservation reservation = reservationService.create();
+
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         reservation.setUser(user);
 
         Reservation savedReservation = reservationService.save(reservation);

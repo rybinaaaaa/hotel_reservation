@@ -24,7 +24,6 @@ public class Payment extends BaseEntity {
     private Reservation reservation;
 
     public Payment() {
-
     }
 
     public Payment(Double amount, Integer billNumber, LocalDate date) {

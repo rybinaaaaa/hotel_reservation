@@ -90,6 +90,35 @@ public class RoomService {
         return rooms.stream().filter(room -> !room.getFreeRoomItems(from, to).isEmpty()).collect(Collectors.toList());
     }
 
+    public List<RoomItem> getRoomItemsByRoom(Optional<Room> roomOptional, Optional<LocalDate> to, Optional<LocalDate> from) {
+        Room room = roomOptional.orElseThrow(IllegalArgumentException::new);
+
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<RoomItem> cq = cb.createQuery(RoomItem.class);
+        Root<Room> roomRoot = cq.from(Room.class);
+
+        Join<Room, RoomItem> roomItemJoin = roomRoot.join(Room_.roomItems);
+
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(cb.equal(roomRoot.get(Room_.id), room.getId()));
+
+        if (to.isPresent() && from.isPresent()) {
+            Join<RoomItem, RoomCart> roomCartJoin = roomItemJoin.join(RoomItem_.roomCarts, JoinType.LEFT);
+
+            Predicate startsBeforeOrDuringTo = cb.lessThanOrEqualTo(roomCartJoin.<LocalDate>get(RoomCart_.reservedFrom), to.get());
+            Predicate endsAfterOrDuringFrom = cb.greaterThanOrEqualTo(roomCartJoin.<LocalDate>get(RoomCart_.reservedTo), from.get());
+
+            Predicate overlaps = cb.and(startsBeforeOrDuringTo, endsAfterOrDuringFrom);
+            Predicate noBookingOrNotOverlapping = cb.or(cb.isNull(roomCartJoin.get(RoomCart_.id)), cb.not(overlaps));
+            predicates.add(noBookingOrNotOverlapping);
+        }
+
+        cq.select(roomItemJoin).where(predicates.toArray(new Predicate[0])).distinct(true);
+
+        TypedQuery<RoomItem> query = em.createQuery(cq);
+        return query.getResultList();
+    }
+
     public List<Room> getFilteredRoom(Optional<Integer> page,
                                       Optional<Integer> perPage,
                                       Optional<LocalDate> from,

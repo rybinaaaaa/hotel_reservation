@@ -1,24 +1,26 @@
 package com.hotel.reservationSystem.services;
 
-import com.hotel.reservationSystem.models.Reservation;
-import com.hotel.reservationSystem.models.RoomCart;
-import com.hotel.reservationSystem.models.RoomItem;
+import com.hotel.reservationSystem.models.*;
 import com.hotel.reservationSystem.repositories.RoomCartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
 public class RoomCartService {
 
     private final RoomCartRepository roomCartRepository;
+    private final RoomService roomService;
 
     @Autowired
-    public RoomCartService(RoomCartRepository roomCartRepository) {
+    public RoomCartService(RoomCartRepository roomCartRepository, RoomService roomService) {
         this.roomCartRepository = roomCartRepository;
+        this.roomService = roomService;
     }
 
     @Transactional
@@ -70,6 +72,15 @@ public class RoomCartService {
     public RoomCart addRoomItemToRoomCart(RoomCart roomCart, RoomItem roomItem) {
         roomCart.setRoomItem(roomItem);
         roomItem.addRoomCart(roomCart);
+        return save(roomCart);
+    }
+
+    @Transactional
+    public RoomCart createRoomCart(Room room, LocalDate from, LocalDate to) {
+        if (to == null || from == null) throw new IllegalArgumentException();
+        RoomCart roomCart = new RoomCart(from, to);
+        List<RoomItem> roomItems = roomService.getRoomItemsByRoom(Optional.of(room), Optional.of(from), Optional.of(to));
+        roomItems.stream().findFirst().ifPresent((roomItem) -> addRoomItemToRoomCart(roomCart, roomItem));
         return save(roomCart);
     }
 }

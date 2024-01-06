@@ -31,8 +31,12 @@ public class ReservationService {
     }
 
     @Transactional
+    public Reservation create() {
+        return reservationRepository.save(enrichReservation(new Reservation()));
+    }
+
+    @Transactional
     public Reservation save(Reservation reservation) {
-        enrichReservation(reservation);
         return reservationRepository.save(reservation);
     }
 
@@ -61,8 +65,9 @@ public class ReservationService {
         return reservationRepository.findById(id).orElse(null);
     }
 
-    public void enrichReservation(Reservation reservation) {
+    public Reservation enrichReservation(Reservation reservation) {
         reservation.setCreatedAt(LocalDate.now());
+        return reservation;
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -136,7 +141,6 @@ public class ReservationService {
 
         return em.createQuery(query).getResultList();
     }
-
 
     @Transactional
     public Reservation addReservationToUser(User user, Reservation reservation) {
