@@ -1,4 +1,5 @@
 package com.hotel.reservationSystem.services;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import com.hotel.reservationSystem.models.*;
 import com.hotel.reservationSystem.repositories.PaymentRepository;
@@ -193,6 +194,7 @@ public class ReservationServiceTest {
     }
 
     @Test
+    @WithMockUser(username="admin", roles={"USER", "ADMIN"})
     public void findReservationByDateAndRoomNumberTest(){
         Reservation expected = setUpCart();
         Reservation result = reservationService.findReservationByDateAndRoomNumber(LocalDate.of(2023, Calendar.AUGUST, 10), LocalDate.of(2023, Calendar.NOVEMBER, 10), 1 );
@@ -214,6 +216,7 @@ public class ReservationServiceTest {
     }
 
     @Test
+    @WithMockUser(username="admin", roles={"USER", "ADMIN"})
     public void findReservationsByRoomNumberTest(){
         Reservation expected = setUpCart();
         List<Reservation> result = reservationService.findReservationsByRoomNumber(1);

@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -32,7 +31,10 @@ public class ReservationService {
 
     @Transactional
     public Reservation create() {
-        return reservationRepository.save(enrichReservation(new Reservation()));
+        Reservation reservation = new Reservation();
+        reservation = reservationRepository.save(reservation);
+        reservation.setCreatedAt(LocalDate.now());
+        return save(reservation);
     }
 
     @Transactional
@@ -109,6 +111,7 @@ public class ReservationService {
 
         return em.createQuery(query).getResultList();
     }
+
     @PreAuthorize("(#fName == authentication.principal.firstName and #lName == authentication.principal.lastName) or hasRole('ROLE_ADMIN')")
     public List<Reservation> findReservationsByUserName(String fName, String lName) {
         CriteriaBuilder cb = em.getCriteriaBuilder();

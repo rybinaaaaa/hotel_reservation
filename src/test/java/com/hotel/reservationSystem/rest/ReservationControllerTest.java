@@ -42,9 +42,9 @@ public class ReservationControllerTest {
     public void testCreateReservation() {
         when(userService.find(anyInt())).thenReturn(new User());
 
-        when(roomCartService.save(anyList())).thenReturn(Arrays.asList(new RoomCart()));
+//        when(roomCartService.save(anyList())).thenReturn(Arrays.asList(new RoomCart()));
 
-        when(reservationService.save(any())).thenReturn(new Reservation());
+        when(reservationService.create()).thenReturn(new Reservation(LocalDate.now()));
 
         ResponseEntity<Reservation> result = reservationController.create(1);
 

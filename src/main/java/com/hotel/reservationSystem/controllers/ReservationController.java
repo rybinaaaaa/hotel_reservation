@@ -34,7 +34,7 @@ public class ReservationController {
         this.roomService = roomService;
     }
 
-    @PostMapping
+    @PostMapping("/createWithRooms")
     public ResponseEntity<Reservation> create(@RequestParam Integer userId, @RequestParam List<RoomCart> roomCarts) {
         if (Objects.isNull(roomCarts)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -56,7 +56,7 @@ public class ReservationController {
         return new ResponseEntity<>(savedReservation, HttpStatus.CREATED);
     }
 
-    @PostMapping
+    @PutMapping("/add_room")
     public ResponseEntity<Reservation> reserveRoom(@RequestParam Integer reservationId, @RequestParam Integer roomId, @RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
                                                    @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
         Room room = roomService.find(roomId);
@@ -70,7 +70,7 @@ public class ReservationController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping
+    @PostMapping()
     public ResponseEntity<Reservation> create(@RequestParam Integer userId) {
         if (Objects.isNull(userId)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -84,10 +84,9 @@ public class ReservationController {
         }
 
         reservation.setUser(user);
+        reservationService.save(reservation);
 
-        Reservation savedReservation = reservationService.save(reservation);
-
-        return new ResponseEntity<>(savedReservation, HttpStatus.CREATED);
+        return new ResponseEntity<>(reservation, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
