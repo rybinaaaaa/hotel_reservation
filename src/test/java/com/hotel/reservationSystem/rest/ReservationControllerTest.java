@@ -46,7 +46,7 @@ public class ReservationControllerTest {
 
         when(reservationService.save(any())).thenReturn(new Reservation());
 
-        ResponseEntity<Reservation> result = reservationController.create(new Reservation(), 1, Arrays.asList(new RoomCart()));
+        ResponseEntity<Reservation> result = reservationController.create(1);
 
         assertEquals(HttpStatus.CREATED, result.getStatusCode());
         assertEquals(Reservation.class, result.getBody().getClass());
