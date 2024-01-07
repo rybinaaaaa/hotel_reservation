@@ -17,15 +17,11 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional
 @TestPropertySource(locations = "classpath:application-test.properties")
 public class CategoryServiceTest {
-    private final CategoryService service;
-    private final RoomService roomService;
+    @Autowired
+    private CategoryService service;
 
     @Autowired
-    public CategoryServiceTest(CategoryService service, RoomService roomService) {
-        this.service = service;
-        this.roomService = roomService;
-    }
-
+    private RoomService roomService;
 
     @Test
     public void addRoomToCategoryAddsRoomToTargetCategory() {

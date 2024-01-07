@@ -2,6 +2,7 @@ package com.hotel.reservationSystem.services;
 
 import com.hotel.reservationSystem.models.Payment;
 import com.hotel.reservationSystem.models.Reservation;
+import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,14 +15,12 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional
 @TestPropertySource(locations = "classpath:application-test.properties")
 public class PaymentServiceTest {
-    private final PaymentService paymentService;
-    private final ReservationService reservationService;
 
     @Autowired
-    public PaymentServiceTest(PaymentService paymentService, ReservationService reservationService) {
-        this.paymentService = paymentService;
-        this.reservationService = reservationService;
-    }
+    private PaymentService paymentService;
+
+    @Autowired
+    private ReservationService reservationService;
 
     @Test
     public void addPaymentToReservationSetsPaymentToReservation(){
