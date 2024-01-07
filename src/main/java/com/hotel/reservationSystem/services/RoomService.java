@@ -144,13 +144,11 @@ public class RoomService {
             predicates.add(noBookingOrNotOverlapping);
         }
 
-        // Фильтрация по категории
         category.ifPresent(cat -> {
             Join<Room, Category> categoryJoin = roomRoot.join(Room_.categories);
             predicates.add(cb.equal(categoryJoin.get(Category_.name), cat));
         });
 
-        // Остальные фильтры
         roomType.ifPresent(type -> predicates.add(cb.equal(roomRoot.get(Room_.roomType), RoomType.valueOf(type))));
         roomClassification.ifPresent(classification -> predicates.add(cb.equal(roomRoot.get(Room_.roomClassification), RoomClassification.valueOf(classification))));
         priceFrom.ifPresent(price -> predicates.add(cb.greaterThanOrEqualTo(roomRoot.get(Room_.price), price)));
