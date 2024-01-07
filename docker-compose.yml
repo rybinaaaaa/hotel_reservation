@@ -7,8 +7,8 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - localhost
-  localhost:
+      - postgres
+  postgres:
     image: postgres
 #    restart: always
     environment:
