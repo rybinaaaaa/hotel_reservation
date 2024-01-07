@@ -57,13 +57,11 @@ public class RoomService {
 
     @Transactional
     public void addCategory(Category category, Room room) {
-//        TODO 2 sides relation
         room.addCategory(category);
     }
 
     @Transactional
     public void removeCategory(Category category, Room room) {
-//        TODO 2 sides relation
         room.removeCategory(category);
     }
 
