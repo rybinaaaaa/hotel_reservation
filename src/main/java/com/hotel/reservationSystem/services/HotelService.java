@@ -1,7 +1,6 @@
 package com.hotel.reservationSystem.services;
 
 import com.hotel.reservationSystem.models.Hotel;
-import com.hotel.reservationSystem.models.Room;
 import com.hotel.reservationSystem.repositories.HotelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,16 +1,13 @@
 package com.hotel.reservationSystem.services;
 
 import com.hotel.reservationSystem.models.Room;
-import com.hotel.reservationSystem.models.RoomCart;
 import com.hotel.reservationSystem.models.RoomItem;
 import com.hotel.reservationSystem.repositories.RoomItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)

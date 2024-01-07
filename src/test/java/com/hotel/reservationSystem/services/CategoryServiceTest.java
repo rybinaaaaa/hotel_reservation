@@ -1,10 +1,8 @@
 package com.hotel.reservationSystem.services;
 
-import environment.Generator;
 import com.hotel.reservationSystem.models.Category;
 import com.hotel.reservationSystem.models.Room;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
+import environment.Generator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

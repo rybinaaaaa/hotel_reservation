@@ -1,13 +1,12 @@
 package environment;
 
-import com.hotel.reservationSystem.models.*;
-import com.hotel.reservationSystem.services.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.hotel.reservationSystem.models.Category;
+import com.hotel.reservationSystem.models.Role;
+import com.hotel.reservationSystem.models.Room;
+import com.hotel.reservationSystem.models.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.List;
 import java.util.Random;
 
 @Service

@@ -1,9 +1,8 @@
 package com.hotel.reservationSystem.util.validators;
 
-import com.hotel.reservationSystem.models.User;
 import com.hotel.reservationSystem.dto.UserDTO;
+import com.hotel.reservationSystem.models.User;
 import com.hotel.reservationSystem.services.UserService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

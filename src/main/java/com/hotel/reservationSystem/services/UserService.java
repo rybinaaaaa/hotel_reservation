@@ -1,18 +1,18 @@
 package com.hotel.reservationSystem.services;
 
 
-import com.hotel.reservationSystem.models.*;
 import com.hotel.reservationSystem.dto.UserDTO;
+import com.hotel.reservationSystem.models.*;
 import com.hotel.reservationSystem.repositories.UserRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;

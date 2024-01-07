@@ -1,8 +1,8 @@
 package com.hotel.reservationSystem.repositories;
 
+import com.hotel.reservationSystem.models.Room;
 import com.hotel.reservationSystem.models.RoomClassification;
 import com.hotel.reservationSystem.models.RoomType;
-import com.hotel.reservationSystem.models.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

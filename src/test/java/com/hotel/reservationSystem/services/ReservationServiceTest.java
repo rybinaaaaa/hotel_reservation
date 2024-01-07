@@ -1,26 +1,19 @@
 package com.hotel.reservationSystem.services;
-import environment.Generator;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.test.context.support.WithMockUser;
 
 import com.hotel.reservationSystem.models.*;
 import com.hotel.reservationSystem.repositories.PaymentRepository;
-import com.hotel.reservationSystem.repositories.ReservationRepository;
-import org.junit.jupiter.api.BeforeEach;
+import environment.Generator;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -50,11 +43,6 @@ public class ReservationServiceTest {
     @InjectMocks
     private PaymentService paymentService;
 
-//    @BeforeEach
-//    public void setUp() {
-//        this.paymentService = new PaymentService(paymentRepository);
-//        this.reservationService = new ReservationService(reservationRepository);
-//    }
 
     @Autowired
     public ReservationServiceTest( UserService userService, RoomService roomService, CategoryService categoryService, RoomItemService roomItemService, RoomCartService roomCartService, ReservationService reservationService) {

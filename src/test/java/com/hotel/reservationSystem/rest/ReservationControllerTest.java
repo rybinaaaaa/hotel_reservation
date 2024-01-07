@@ -2,7 +2,6 @@ package com.hotel.reservationSystem.rest;
 
 import com.hotel.reservationSystem.controllers.ReservationController;
 import com.hotel.reservationSystem.models.Reservation;
-import com.hotel.reservationSystem.models.RoomCart;
 import com.hotel.reservationSystem.models.User;
 import com.hotel.reservationSystem.services.ReservationService;
 import com.hotel.reservationSystem.services.RoomCartService;

@@ -112,7 +112,6 @@ public class ReservationService {
         return em.createQuery(query).getResultList();
     }
 
-//    @PreAuthorize("(#fName == authentication.principal.firstName and #lName == authentication.principal.lastName) or hasRole('ROLE_ADMIN')")
     public List<Reservation> findReservationsByUserName(String fName, String lName) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Reservation> query = cb.createQuery(Reservation.class);

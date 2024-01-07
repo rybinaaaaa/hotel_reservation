@@ -1,13 +1,10 @@
     package com.hotel.reservationSystem.models;
 
     import com.fasterxml.jackson.annotation.JsonIgnore;
-    import com.fasterxml.jackson.annotation.JsonManagedReference;
     import jakarta.persistence.*;
-    import jakarta.validation.constraints.NotNull;
 
     import java.time.LocalDate;
     import java.util.Collections;
-    import java.util.Date;
     import java.util.List;
     import java.util.Objects;
     import java.util.stream.Collectors;
