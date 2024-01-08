@@ -1,0 +1,388 @@
+Autorization: Auth Digest
+username: test@test.com
+password: test
+
+
+GET
+http://localhost:8080/api/users
+pm.test("Response status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+
+
+
+http://localhost:8080/api/users/999
+pm.test("Response status code is 404", function () {
+  pm.response.to.have.status(404);
+});
+pm.test("Response has Content-Type header set to 'text/xml'", function () {
+    pm.expect(pm.response.headers.get("Content-Type")).to.include("text/xml");
+});
+pm.test("Response body is empty or null", function () {
+    const responseData = xml2Json(pm.response.text());
+
+    pm.expect(responseData).to.be.null;
+});
+
+
+http://localhost:8080/api/users/phone?phone=937429874
+pm.test("Status code is 200 OK", function () {
+    pm.response.to.have.status(200);
+});
+pm.test("Response body contains user information", function () {
+    var jsonData = pm.response.json();
+    pm.expect(jsonData).to.have.property("id");
+    pm.expect(jsonData).to.have.property("phone", "937429874");
+    pm.expect(jsonData).to.have.property("firstName", "root");
+    pm.expect(jsonData).to.have.property("lastName", "root");
+    pm.expect(jsonData).to.have.property("email", "root@root.com");
+    pm.expect(jsonData).to.have.property("role", "USER");
+});
+
+
+http://localhost:8080/api/users/name?firstName=test&lastName=test
+pm.test("Status code is 200 OK", function () {
+    pm.response.to.have.status(200);
+});
+pm.test("Response body contains correct user information", function () {
+    var jsonData = pm.response.json();
+    pm.expect(jsonData).to.have.property("phone", "+38000000000");
+    pm.expect(jsonData).to.have.property("firstName", "test");
+    pm.expect(jsonData).to.have.property("lastName", "test");
+    pm.expect(jsonData).to.have.property("email", "test@test.com");
+    pm.expect(jsonData).to.have.property("role", "ADMIN");
+});
+
+
+http://localhost:8080/api/users
+pm.test("Response status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+pm.test("Response is an array of objects with specific properties", function () {
+    pm.expect(pm.response.json()).to.be.an('array');
+    pm.response.json().forEach(function(user) {
+        pm.expect(user).to.be.an('object').that.has.all.keys('id', 'phone', 'firstName', 'lastName', 'password', 'email', 'role');
+    });
+});
+
+
+http://localhost:8080/api/users/roomNumberAndDate?roomNumber=101&fromDate=2024-01-01&toDate=2024-01-07
+
+pm.test("Status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+pm.test("Response body is an array of objects with specific properties", function () {
+    var responseBody = pm.response.json();
+    pm.expect(responseBody).to.be.an('array');
+    responseBody.forEach(function(user) {
+        pm.expect(user).to.be.an('object').that.has.all.keys('id', 'phone', 'firstName', 'lastName', 'password', 'email', 'role');
+    });
+});
+
+http://localhost:8080/api/users/afterSpecificDate?date=2024-01-01
+// Check if the response status is 200
+pm.test("Status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+pm.test("Response is a JSON array", function () {
+    pm.response.to.have.jsonBody();
+    pm.response.to.be.json;
+    pm.response.to.be.ok;
+});
+
+pm.test("Response contains at least one user", function () {
+    var jsonData = pm.response.json();
+    pm.expect(jsonData).to.be.an('array');
+    pm.expect(jsonData.length).to.be.greaterThan(0);
+});
+
+pm.test("Each user has expected properties", function () {
+    var jsonData = pm.response.json();
+    jsonData.forEach(function (user) {
+        pm.expect(user).to.have.property('id');
+        pm.expect(user).to.have.property('phone');
+        pm.expect(user).to.have.property('firstName');
+        pm.expect(user).to.have.property('lastName');
+        pm.expect(user).to.have.property('password');
+        pm.expect(user).to.have.property('email');
+        pm.expect(user).to.have.property('role');
+    });
+});
+
+
+http://localhost:8080/api/reservation
+
+pm.test("Response status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+pm.test("Response is an array of reservations", function () {
+    pm.expect(pm.response.json()).to.be.an('array').that.is.not.empty;
+});
+
+pm.test("Each reservation has an id, createdAt, user, and payment", function () {
+    pm.response.json().forEach(function(reservation) {
+        pm.expect(reservation).to.have.property('id');
+        pm.expect(reservation).to.have.property('createdAt');
+        pm.expect(reservation).to.have.property('user');
+        pm.expect(reservation).to.have.property('payment');
+    });
+});
+
+
+
+http://localhost:8080/api/reservation/dateAndRoomNumber?from=2024-01-01&to=2024-01-07&roomNumber=101
+
+pm.test("Response status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+pm.test("Response is an object with id, createdAt, user, and payment properties", function () {
+    var jsonData = pm.response.json();
+    pm.expect(jsonData).to.be.an('object').that.has.all.keys('id', 'createdAt', 'user', 'payment');
+});
+
+//test will work if change phone number request was not sent yet
+http://localhost:8080/api/reservation/userPhone?phone=38000000000
+pm.test("Response status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+pm.test("Response is an object with id, createdAt, user, and payment properties", function () {
+    var jsonData = pm.response.json();
+    pm.expect(jsonData).to.be.an('object').that.has.all.keys('id', 'createdAt', 'user', 'payment');
+});
+
+
+http://localhost:8080/api/reservation/userName?firstName=test&lastName=test
+
+pm.test("Response status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+
+
+http://localhost:8080/api/reservation/roomNumber?roomNumber=101
+
+pm.test("Response status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+
+http://localhost:8080/api/rooms
+pm.test("Response status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+pm.test("Response is an array of objects with specific properties", function () {
+    pm.response.json().forEach(function(room) {
+        pm.expect(room).to.be.an('object').that.has.all.keys('id', 'name', 'price', 'description', 'roomClassification', 'roomType');
+    });
+});
+
+
+
+http://localhost:8080/api/rooms/filtered?from=2024-02-05&to=2024-02-12
+
+pm.test("Response status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+pm.test("Response is an array of rooms", function () {
+    pm.expect(pm.response.json()).to.be.an('array').that.is.not.empty;
+    pm.response.json().forEach(function(room) {
+        pm.expect(room).to.have.property('id');
+        pm.expect(room).to.have.property('name');
+        pm.expect(room).to.have.property('price');
+        pm.expect(room).to.have.property('description');
+        pm.expect(room).to.have.property('roomClassification');
+        pm.expect(room).to.have.property('roomType');
+    });
+});
+
+
+
+http://localhost:8080/api/rooms/filtered?priceTo=300
+
+pm.test("Response status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+pm.test("Response is an array of room objects", function () {
+    pm.expect(pm.response.json()).to.be.an('array').that.is.not.empty;
+    pm.response.json().forEach(function(room) {
+        pm.expect(room).to.have.property('id');
+        pm.expect(room).to.have.property('name');
+        pm.expect(room).to.have.property('price');
+        pm.expect(room).to.have.property('description');
+        pm.expect(room).to.have.property('roomClassification');
+        pm.expect(room).to.have.property('roomType');
+    });
+});
+
+
+
+http://localhost:8080/api/rooms/filtered?priceFrom=30000
+
+pm.test("Response status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+
+pm.test("Response is empty", function () {
+    pm.expect(pm.response.json()).to.be.an('array').that.is.empty;
+});
+
+
+http://localhost:8080/api/rooms/1
+
+pm.test("Response status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+pm.test("Response is an object with id, name, price, description, roomClassification, and roomType properties", function () {
+    var jsonData = pm.response.json();
+    pm.expect(jsonData).to.be.an('object').that.has.all.keys('id', 'name', 'price', 'description', 'roomClassification', 'roomType');
+});
+
+
+
+
+
+
+
+
+
+
+
+
+POST
+
+http://localhost:8080/api/users/add
+pm.test("Response status code is 201", function () {
+    pm.expect(pm.response.code).to.equal(201);
+});
+
+pm.test("Response is an object with id, phone, firstName, lastName, password, email, and role properties", function () {
+    pm.expect(pm.response.json()).to.be.an('object').that.has.all.keys('id', 'phone', 'firstName', 'lastName', 'password', 'email', 'role');
+});
+
+
+http://localhost:8080/api/reservation?userId=1
+pm.test("Response status code is 201", function () {
+    pm.response.to.have.status(201);
+});
+
+pm.test("Response is an object with id, createdAt, user, and payment properties", function () {
+    var jsonData = pm.response.json();
+    pm.expect(jsonData).to.be.an('object').that.has.all.keys('id', 'createdAt', 'user', 'payment');
+});
+
+
+http://localhost:8080/api/rooms/add
+
+pm.test("Response status code is 201", function () {
+    pm.response.to.have.status(201);
+});
+
+pm.test("Response is an object with id, name, price, description, roomClassification, and roomType properties", function () {
+    var jsonData = pm.response.json();
+    pm.expect(jsonData).to.be.an('object');
+    pm.expect(jsonData).to.have.property('id');
+    pm.expect(jsonData).to.have.property('name');
+    pm.expect(jsonData).to.have.property('price');
+    pm.expect(jsonData).to.have.property('description');
+    pm.expect(jsonData).to.have.property('roomClassification');
+    pm.expect(jsonData).to.have.property('roomType');
+});
+
+
+
+PUT
+http://localhost:8080/api/users/1
+
+body:
+{
+    "phone": "3800000000",
+    "firstName": "test",
+    "lastName": "test",
+    "password": "test",
+    "email": "test@test.com"
+}
+
+pm.test("Status code is 201", function () {
+    pm.response.to.have.status(201);
+});
+
+pm.test("Response should be a JSON", function () {
+    pm.response.to.have.jsonBody();
+});
+
+pm.test("Response should have correct attributes", function () {
+    pm.response.to.have.jsonBody("id", 1);
+    pm.response.to.have.jsonBody("phone", "3800000000");
+    pm.response.to.have.jsonBody("firstName", "test");
+    pm.response.to.have.jsonBody("lastName", "test");
+    pm.response.to.have.jsonBody("password", "test");
+    pm.response.to.have.jsonBody("email", "test@test.com");
+    pm.response.to.not.have.jsonBody("role");
+});
+
+
+http://localhost:8080/api/reservation/add_room?reservationId=1&roomId=1&from=2024-01-01&to=2024-01-07
+
+pm.test("Response status code is 201", function () {
+    pm.response.to.have.status(201);
+});
+
+pm.test("Response is an object with id property", function () {
+    pm.expect(pm.response.json()).to.be.an('object').that.has.property('id');
+});
+
+pm.test("Response is an object with createdAt property", function () {
+    pm.expect(pm.response.json()).to.be.an('object').that.has.property('createdAt');
+…});
+
+
+http://localhost:8080/api/rooms/2
+body:
+{
+ "id": 2,
+  "name": "Standard family",
+  "price": 300.0,
+  "description": "Please do not be strict to us:)",
+  "roomClassification": "DELUXE",
+  "roomType": "FAMILY",
+  "hotel": {"id": 1}
+}
+pm.test("Response status code is 201", function () {
+    pm.response.to.have.status(201);
+});
+
+pm.test("Response is an object with id, name, price, description, roomClassification, and roomType properties", function () {
+    var responseBody = pm.response.json();
+    pm.expect(responseBody).to.be.an('object').that.has.all.keys('id', 'name', 'price', 'description', 'roomClassification', 'roomType');
+});
+
+
+
+DELETE
+
+http://localhost:8080/api/users/20
+
+pm.test("Response status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+
+http://localhost:8080/api/rooms/2
+
+pm.test("Response status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+
